@@ -1,62 +1,3 @@
-
-* **SY-CPAGE** – Holds Current Page Number → **Geçerli sayfa numarasını tutar**
-* **SY-DBSYS** – System DB System → **Sistem veritabanı türü**
-* **SY-DYNNR** – Number of Current Screen → **Geçerli ekran numarası**
-* **SY-INDEX** – Number Of Loop passes → **Döngü sayacı (kaç tur döndüğünü gösterir)**
-* **SY-LANGU** – SAP Log on Language Key → **SAP oturum dili**
-* **SY-LILLI** – Number Of Current List Line → **Geçerli listede seçili satır numarası**
-* **SY-LINCT** – Number Of List Lines → **Listedeki toplam satır sayısı**
-* **SY-LINNO** – Current Line for List Creation → **Liste oluşturmadaki geçerli satır**
-* **SY-LINSZ** – Line Size of List → **Liste satır genişliği (karakter)**
-* **SY-LISEL** – Selected Line For Interactive List → **Etkileşimli listede seçili satır**
-* **SY-LSIND** – Number Of Secondary List → **İkincil listenin numarası**
-* **SY-CPROG** – Contains Program Name → **Program adını tutar**
-* **SY-MANDT** – Client Number For SAP Log On → **SAP istemci numarası**
-* **SY-MSGID** – Message ID → **Mesaj kimliği**
-* **SY-MSGTY** – Message Type → **Mesaj tipi (I, E, W vb.)**
-* **SY-MSGNO** – Message Number → **Mesaj numarası**
-* **SY-MSGV1** – Message Variable1 → **Mesaj değişkeni 1**
-* **SY-MSGV2** – Message Variable2 → **Mesaj değişkeni 2**
-* **SY-MSGV3** – Message Variable3 → **Mesaj değişkeni 3**
-* **SY-MSGV4** – Message Variable4 → **Mesaj değişkeni 4**
-* **SY-OPSYS** – Operating System → **İşletim sistemi**
-* **SY-PAART** – Print Format → **Yazdırma formatı**
-* **SY-CUCOL** – Cursor Position (Column) → **İmlecin sütun pozisyonu**
-* **SY-DBNAM** – Logical DB for ABAP/4 Program → **ABAP programı için mantıksal veritabanı adı**
-* **SY-DYNNR** – Current Screen Number → **Geçerli ekran numarası**
-* **SY-REPID** – Report Name → **Rapor adı**
-
-* **SY-PAGCT** – Page Size of List in Report Program → **Rapor programındaki liste sayfa boyutu**
-* **SY-PAGNO** – Current Page in the List → **Listedeki geçerli sayfa numarası**
-* **SY-PDEST** – Print Output Device → **Yazdırma çıkış cihazı**
-* **SY-PFKEY** – Run time Current F key Status → **Çalışma anındaki fonksiyon tuşu durumu**
-* **SY-REPID** – Report Name in ABAP → **ABAP programının (raporun) adı**
-* **SY-SAPRL** – SAP Release → **SAP sürümü**
-* **SY-SUBRC** – Return Value after specific ABAP Statement → **Belirli ABAP komutundan dönen değer (başarı/hata kodu)**
-* **SY-SYSID** – SAP system ID → **SAP sistem kimliği**
-* **SY-TABIX** – Current line of Internal Table → **İç tablodaki geçerli satır numarası**
-* **SY-TCODE** – Current Transaction Code → **Geçerli işlem kodu**
-* **SY-CUROW** – Cursor Position (Line) → **İmlecin satır pozisyonu**
-* **SY-TIMLO** – Local Time Of User → **Kullanıcının yerel saati**
-* **SY-TITLE** – Title of ABAP Program → **ABAP program başlığı**
-* **SY-TMAXL** – Maximum entries in an Internal Table → **Bir iç tablodaki maksimum kayıt sayısı**
-* **SY-TNAME** – Name Of Internal Table after first Access → **İlk erişimden sonra iç tablonun adı**
-* **SY-UCOMM** – Interact: Command field Function entry / Function code → **Kullanıcı komut alanı (fonksiyon kodu)**
-* **SY-ULINE** – Underline → **Alt çizgi (listeleme)**
-* **SY-UNAME** – Session: SAP user from Log On → **Oturum açan kullanıcı adı**
-* **SY-UZEIT** – System Time → **Sistem saati**
-* **SY-VLINE** – Vertical Bar → **Dikey çizgi (listeleme)**
-* **SY-DATLO** – Local Date for User → **Kullanıcının yerel tarihi**
-* **SY-DATUM** – System Date → **Sistem tarihi**
-* **SY-DATUD** – Global Date Related To UTC (GMT) → **UTC’ye göre global tarih**
-* **SY-DBCNT** – Number of entries read by DB Operation → **Veritabanı işlemi ile okunan kayıt sayısı**
-* **SY-DBCNTL** – Number of entries read by DB Operation in List → **Listede veritabanı işlemi ile okunan kayıt sayısı**
-* **SY-DBSQL** – SQL Statement → **SQL ifadesi**
-* **SY-DBVER** – Database Version → **Veritabanı sürümü**
-* **SY-DBKEY** – Database Key → **Veritabanı anahtarı
-* **SY-DBTAB** – Database Table Name → **Veritabanı tablosu adı**
-* **SY-DBTYP** – Database Type → **Veritabanı türü**
-
 REPORT ZZ_02_SYSTEM.
 
 DATA: lt_vars TYPE TABLE OF string,
@@ -121,3 +62,61 @@ LOOP AT lt_vars INTO lv_line.
   WRITE: / lv_line(10) COLOR 6,  "SY-XXXXX kısmı
            lv_line+10   COLOR 3. "Açıklama kısmı
 ENDLOOP.
+
+* **SY-CPAGE** – Holds Current Page Number → **Geçerli sayfa numarasını tutar**
+* **SY-DBSYS** – System DB System → **Sistem veritabanı türü**
+* **SY-DYNNR** – Number of Current Screen → **Geçerli ekran numarası**
+* **SY-INDEX** – Number Of Loop passes → **Döngü sayacı (kaç tur döndüğünü gösterir)**
+* **SY-LANGU** – SAP Log on Language Key → **SAP oturum dili**
+* **SY-LILLI** – Number Of Current List Line → **Geçerli listede seçili satır numarası**
+* **SY-LINCT** – Number Of List Lines → **Listedeki toplam satır sayısı**
+* **SY-LINNO** – Current Line for List Creation → **Liste oluşturmadaki geçerli satır**
+* **SY-LINSZ** – Line Size of List → **Liste satır genişliği (karakter)**
+* **SY-LISEL** – Selected Line For Interactive List → **Etkileşimli listede seçili satır**
+* **SY-LSIND** – Number Of Secondary List → **İkincil listenin numarası**
+* **SY-CPROG** – Contains Program Name → **Program adını tutar**
+* **SY-MANDT** – Client Number For SAP Log On → **SAP istemci numarası**
+* **SY-MSGID** – Message ID → **Mesaj kimliği**
+* **SY-MSGTY** – Message Type → **Mesaj tipi (I, E, W vb.)**
+* **SY-MSGNO** – Message Number → **Mesaj numarası**
+* **SY-MSGV1** – Message Variable1 → **Mesaj değişkeni 1**
+* **SY-MSGV2** – Message Variable2 → **Mesaj değişkeni 2**
+* **SY-MSGV3** – Message Variable3 → **Mesaj değişkeni 3**
+* **SY-MSGV4** – Message Variable4 → **Mesaj değişkeni 4**
+* **SY-OPSYS** – Operating System → **İşletim sistemi**
+* **SY-PAART** – Print Format → **Yazdırma formatı**
+* **SY-CUCOL** – Cursor Position (Column) → **İmlecin sütun pozisyonu**
+* **SY-DBNAM** – Logical DB for ABAP/4 Program → **ABAP programı için mantıksal veritabanı adı**
+* **SY-DYNNR** – Current Screen Number → **Geçerli ekran numarası**
+* **SY-REPID** – Report Name → **Rapor adı**
+
+* **SY-PAGCT** – Page Size of List in Report Program → **Rapor programındaki liste sayfa boyutu**
+* **SY-PAGNO** – Current Page in the List → **Listedeki geçerli sayfa numarası**
+* **SY-PDEST** – Print Output Device → **Yazdırma çıkış cihazı**
+* **SY-PFKEY** – Run time Current F key Status → **Çalışma anındaki fonksiyon tuşu durumu**
+* **SY-REPID** – Report Name in ABAP → **ABAP programının (raporun) adı**
+* **SY-SAPRL** – SAP Release → **SAP sürümü**
+* **SY-SUBRC** – Return Value after specific ABAP Statement → **Belirli ABAP komutundan dönen değer (başarı/hata kodu)**
+* **SY-SYSID** – SAP system ID → **SAP sistem kimliği**
+* **SY-TABIX** – Current line of Internal Table → **İç tablodaki geçerli satır numarası**
+* **SY-TCODE** – Current Transaction Code → **Geçerli işlem kodu**
+* **SY-CUROW** – Cursor Position (Line) → **İmlecin satır pozisyonu**
+* **SY-TIMLO** – Local Time Of User → **Kullanıcının yerel saati**
+* **SY-TITLE** – Title of ABAP Program → **ABAP program başlığı**
+* **SY-TMAXL** – Maximum entries in an Internal Table → **Bir iç tablodaki maksimum kayıt sayısı**
+* **SY-TNAME** – Name Of Internal Table after first Access → **İlk erişimden sonra iç tablonun adı**
+* **SY-UCOMM** – Interact: Command field Function entry / Function code → **Kullanıcı komut alanı (fonksiyon kodu)**
+* **SY-ULINE** – Underline → **Alt çizgi (listeleme)**
+* **SY-UNAME** – Session: SAP user from Log On → **Oturum açan kullanıcı adı**
+* **SY-UZEIT** – System Time → **Sistem saati**
+* **SY-VLINE** – Vertical Bar → **Dikey çizgi (listeleme)**
+* **SY-DATLO** – Local Date for User → **Kullanıcının yerel tarihi**
+* **SY-DATUM** – System Date → **Sistem tarihi**
+* **SY-DATUD** – Global Date Related To UTC (GMT) → **UTC’ye göre global tarih**
+* **SY-DBCNT** – Number of entries read by DB Operation → **Veritabanı işlemi ile okunan kayıt sayısı**
+* **SY-DBCNTL** – Number of entries read by DB Operation in List → **Listede veritabanı işlemi ile okunan kayıt sayısı**
+* **SY-DBSQL** – SQL Statement → **SQL ifadesi**
+* **SY-DBVER** – Database Version → **Veritabanı sürümü**
+* **SY-DBKEY** – Database Key → **Veritabanı anahtarı
+* **SY-DBTAB** – Database Table Name → **Veritabanı tablosu adı**
+* **SY-DBTYP** – Database Type → **Veritabanı türü**
