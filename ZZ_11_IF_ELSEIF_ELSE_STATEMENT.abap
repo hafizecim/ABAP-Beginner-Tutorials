@@ -1,7 +1,7 @@
-REPORT ZZ_11_IF_ELSE_ELSEIF_STATEMENT.
+REPORT ZZ_11_IF_ELSEIF_ELSE_STATEMENT.
 
 *----------------------------------------------------------------------
-* Program: ZZ_11_IF_STATEMENT
+* Program: ZZ_11_IF_ELSEIF_ELSE_STATEMENT
 * Konu   : ABAP’ta IF-ELSEIF-ELSE ve farklı kontrol yapıları
 * Açıklama:
 *   Bu program ABAP dilinde IF koşulları ile çeşitli veri kontrollerini
