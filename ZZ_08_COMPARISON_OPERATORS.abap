@@ -3,7 +3,6 @@ REPORT ZZ_08_COMPARISON_OPERATORS.
 DATA: opr1 type i value 13,
       opr2 type i value 8.
 
-
 *---------------------------------------------------------------------
 * Comparison Operators / Karşılaştırma Operatörleri
 *---------------------------------------------------------------------
