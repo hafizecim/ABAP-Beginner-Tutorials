@@ -32,15 +32,16 @@ srt1 = 'Abap Programming'.
 srt2 = 'Abap Programming for Beginners'.
 
 IF srt1 CO srt2. " CO Operatörü: STR1, STR2'yi içeriyor mu?
-  WRITE: / 'CO: Process True'.
+  WRITE: / 'CO: Process True'. 
 ELSE.
   WRITE: / 'CO: Process False'.
+  " Sonuç: FALSE (STR2, STR1'in içinde tam olarak yok)
 ENDIF.
 ULINE.
 
 *---------------------------------------------------------------------
 * CN (Contains / İçeriyor)
-* Kontrol: STR2'nin içinde STR3 var mı?
+* Kontrol: STR4'nin içinde STR3 var mı?
 *---------------------------------------------------------------------
 srt3 = 'Abap Developer'.
 srt4 = 'Abap Programming for Beginners'.
@@ -49,6 +50,7 @@ IF srt4 CN srt3. " CN Operatörü: STR4, STR3'ü içeriyor mu?
   WRITE: / 'CN: Process True'.
 ELSE.
   WRITE: / 'CN: Process False'.
+  " Sonuç: FALSE (STR4, STR3'ü içermez)
 ENDIF.
 ULINE.
 
@@ -61,6 +63,7 @@ srt6 = 'Abap programming'.
 
 IF srt5 CA srt6.
   WRITE: / 'CA: Process True'.
+  " Sonuç: TRUE (case-sensitive olarak 'Ab' bulunur)
 ELSE.
   WRITE: / 'CA: Process False'.
 ENDIF.
@@ -75,6 +78,7 @@ srt8 = 'Abap Programming for Beginners'.
 
 IF srt7 CS srt8.
   WRITE: / 'CS: Process True'.
+  " Sonuç: TRUE (STR7, STR8'in başlangıcıyla eşleşiyor)
 ELSE.
   WRITE: / 'CS: Process False'.
 ENDIF.
@@ -89,6 +93,7 @@ srt10 = 'Abap*gramming*Beginners'.
 
 IF srt9 CP srt10.
   WRITE: / 'CP: Process True'.
+  " Sonuç: TRUE (* joker karakteri ile eşleşir)
 ELSE.
   WRITE: / 'CP: Process False'.
 ENDIF.
@@ -103,6 +108,7 @@ srt12 = 'Abap Programming for Beginners'.
 
 IF srt11 NA srt12.
   WRITE: / 'NA: Process True'.
+  " Sonuç: TRUE (STR11, STR12'yi içermez)
 ELSE.
   WRITE: / 'NA: Process False'.
 ENDIF.
@@ -117,6 +123,7 @@ srt14 = 'Abap Programming for Beginners'.
 
 IF srt13 NE srt14.
   WRITE: / 'NE: Process True'.
+  " Sonuç: TRUE (eşit değil)
 ELSE.
   WRITE: / 'NE: Process False'.
 ENDIF.
@@ -131,6 +138,7 @@ srt16 = 'Abap Programming for Beginners'.
 
 IF srt15 NS srt16.
   WRITE: / 'NS: Process True'.
+  " Sonuç: TRUE (STR15, STR16 ile başlamıyor)
 ELSE.
   WRITE: / 'NS: Process False'.
 ENDIF.
@@ -147,5 +155,6 @@ IF srt17 NP srt18.
   WRITE: / 'NP: Process True'.
 ELSE.
   WRITE: / 'NP: Process False'.
+  " Sonuç: FALSE (desen ile eşleşir, NOT olmadığı için FALSE)
 ENDIF.
 ULINE.
