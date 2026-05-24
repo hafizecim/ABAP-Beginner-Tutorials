@@ -1,7 +1,10 @@
 REPORT zz_01_write.
 
 *---------------------------------------------------------------------*
-* Basic WRITE examples
+* Program Name : ZZ_01_WRITE
+* Author       : Hafize
+* Purpose      : Learning basic WRITE statement usage
+* Topics       : WRITE, COLOR, COMMENTS
 *---------------------------------------------------------------------*
 
 WRITE: / 'Hello, World!'.
