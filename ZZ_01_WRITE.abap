@@ -1,8 +1,13 @@
-REPORT ZZ_01_WRITE.
+REPORT zz_01_write.
 
-WRITE 'Hello, World!'.
-WRITE: 'Merhaba, ABAP!'  color 5.,
-     / 'Merhaba, Dünya'  color 6.
-WRITE: 'Merhaba, ABAP!'  color 5.,
-       'Merhaba, Dünya'  color 6. "Bu satır yorum satırıdır, kod çalıştırılmaz."
-* Bu satır yorum satırıdır, kod çalıştırılmaz.* 
+*---------------------------------------------------------------------*
+* Basic WRITE examples
+*---------------------------------------------------------------------*
+
+WRITE: / 'Hello, World!'.
+
+WRITE: / 'Merhaba, ABAP!' COLOR 5,
+       / 'Merhaba, Dunya!' COLOR 6.
+
+" Inline comment example
+* Full line comment example
