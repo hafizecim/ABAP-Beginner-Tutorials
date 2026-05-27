@@ -18,7 +18,7 @@
 * - Type X (Hexadecimal)
 *---------------------------------------------------------------------*
 
-REPORT zz_06_data_types_examples_1.
+REPORT ZZ_06_DATA_TYPES_EXAMPLES_1.
 
 *---------------------------------------------------------------------*
 * Type C (Character)
