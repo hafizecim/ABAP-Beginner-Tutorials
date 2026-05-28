@@ -17,7 +17,7 @@
 * - Modern ABAP Syntax
 *---------------------------------------------------------------------*
 
-REPORT zz_03_data_types_examples_2.
+REPORT ZZ_03_DATA_TYPES_EXAMPLES_2.
 
 *---------------------------------------------------------------------*
 * 1. Elementary Data Types
