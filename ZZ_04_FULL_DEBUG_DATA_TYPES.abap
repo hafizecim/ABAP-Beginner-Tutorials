@@ -5,7 +5,7 @@
 *& Modern Syntax Version
 *&---------------------------------------------------------------------*
 
-REPORT zfull_debug_data_types.
+REPORT ZFULL_DEBUG_DATA_TYPES.
 
 "==============================
 " 1️⃣ Elementary Data Types
