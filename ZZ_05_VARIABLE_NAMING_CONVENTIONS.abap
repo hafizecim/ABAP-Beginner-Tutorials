@@ -1,4 +1,4 @@
-REPORT zz_05_variable_naming_conventions.
+REPORT ZZ_05_VARIABLE_NAMING_CONVENTIONS.
 
 "=========================================================
 " Global Variables
