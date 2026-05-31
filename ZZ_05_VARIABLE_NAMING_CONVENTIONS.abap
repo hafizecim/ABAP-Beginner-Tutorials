@@ -1,47 +1,73 @@
-REPORT ZZ_05_VARIABLE_NAMING_CONVENTIONS.
+REPORT zz_05_variable_naming_conventions.
 
 "=========================================================
-" Tablo Tanımı
+" Global Variables
 "=========================================================
-TABLES: sflight.
+DATA gv_carrid  TYPE sflight-carrid.
+
+DATA gt_sflight TYPE TABLE OF sflight.
+
+DATA gs_sflight TYPE sflight.
 
 "=========================================================
-" Global Değişkenler
+" Parameters
 "=========================================================
-DATA: gv_carrid   TYPE sflight-carrid.        " Global değişken (variable)
-DATA: gt_sflight  TYPE TABLE OF sflight.      " Global iç tablo (internal table)
-DATA: gs_sflight  LIKE LINE OF gt_sflight.    " Global iç tablo satırı (structure)
-"DATA: gs_sflight TYPE sflight.             " Alternatif olarak doğrudan tablo satırı tipi
+PARAMETERS p_carrid TYPE sflight-carrid.
+
+SELECT-OPTIONS s_carrid FOR gv_carrid.
 
 "=========================================================
-" Parametre ve Seçenekler (Kullanıcı Girişi)
+" Constants
 "=========================================================
-PARAMETERS: p_carrid TYPE sflight-carrid.    " Parametre (tek değerli input)
-SELECT-OPTIONS: s_carrid FOR sflight-carrid. " Seçenekler (select-options) ile kullanıcıdan çoklu giriş alabiliriz
+CONSTANTS gc_pi TYPE p VALUE '3.14'.
 
 "=========================================================
-" Sabitler
+" Local Class
 "=========================================================
-CONSTANTS: c_pi TYPE p VALUE '3.14'.         " Sabit (constant)
+CLASS lcl_flight DEFINITION.
+
+  PUBLIC SECTION.
+
+    METHODS get_flight_data.
+
+ENDCLASS.
+
+CLASS lcl_flight IMPLEMENTATION.
+
+  METHOD get_flight_data.
+
+    DATA lv_fldate TYPE sflight-fldate.
+
+    SELECT SINGLE carrid
+                  connid
+                  fldate
+                  price
+      FROM sflight
+      INTO @gs_sflight
+      WHERE carrid = @p_carrid.
+
+    IF sy-subrc = 0.
+
+      WRITE: / |Carrier ID : { gs_sflight-carrid }|,
+             / |Connection : { gs_sflight-connid }|,
+             / |Flight Date: { gs_sflight-fldate }|,
+             / |Price      : { gs_sflight-price }|.
+
+    ELSE.
+
+      WRITE: / 'No data found'.
+
+    ENDIF.
+
+  ENDMETHOD.
+
+ENDCLASS.
 
 "=========================================================
-" Program Başlangıcı
+" Start of Selection
 "=========================================================
 START-OF-SELECTION.
-  " Kullanıcıdan giriş alma ve seçimi hazırlama
-  PERFORM build_select.
 
-"=========================================================
-" Form Tanımı
-"=========================================================
-FORM build_select.
-    " Bu alanda tanımlanan değişkenler sadece form içinde geçerlidir (local)
-    DATA: lv_fldate TYPE sflight-fldate.     " Local değişken (variable)
+  DATA(lo_flight) = NEW lcl_flight( ).
 
-    " Global değişkenler form içinde de kullanılabilir
-    SELECT SINGLE *
-      FROM sflight
-      INTO gs_sflight
-      WHERE carrid = p_carrid.
-
-ENDFORM.
+  lo_flight->get_flight_data( ).
