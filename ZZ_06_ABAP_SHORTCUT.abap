@@ -1,39 +1,71 @@
-REPORT ZZ_06_ABAP_SHORTCUT.
+REPORT zz_06_abap_shortcut.
 
 *---------------------------------------------------------------------
-* Report: ZZ_06_ABAP_SHORTCUT
-* Açıklama: ABAP Editör Kısayolları ve Debug Örnekleri
+* Report : ZZ_06_ABAP_SHORTCUT
+* Purpose: ABAP Editor Shortcuts + Debug Practice
 *---------------------------------------------------------------------
 
-DATA: lv_integer TYPE i. 
+"=========================================================
+" Variables
+"=========================================================
+DATA lv_integer TYPE i VALUE 10.
+DATA lv_result  TYPE i.
 
-*---------------------------------------------------------------------
-* ABAP Editör Kısayolları
-*---------------------------------------------------------------------
-" CTRL+D        : İmleçteki satırı altına çoğaltır
-" CTRL+<        : Seçili satırı yorum satırına dönüştürür
-" CTRL+SHIFT+<  : Yorum satırını tekrar aktif hale getirir
-" CTRL+F2       : Syntax (yazım) hatalarını kontrol eder
-" CTRL+F8       : Programı çalıştırır
-" CTRL+SPACE    : Değişken veya komut yazarken otomatik tamamlama
-" F1            : Seçili ABAP komutu için yardım ekranını açar
-" CTRL+F        : Arama yapar
-" CTRL+H        : Arama ve değiştirme işlemi yapar
-" CTRL+Z        : Geri al (undo)
-" CTRL+Y        : Geri alınanı tekrar uygular (redo)
-" CTRL+SHIFT+F  : Kod formatlama (auto-format)
-" CTRL+SHIFT+I  : Satırı girintiler (indent)
-" CTRL+SHIFT+U  : Satırı girintiden çıkar (outdent)
-" CTRL+SHIFT+S  : Programı kaydeder
-" CTRL+SHIFT+N  : Yeni ABAP programı oluşturur
-" CTRL+SHIFT+O  : Açık programları listeler
+DATA lt_numbers TYPE TABLE OF i.
 
-*---------------------------------------------------------------------
-* ABAP Debug Kısayolları
-*---------------------------------------------------------------------
-" F5 (Step Into)  : Method/fonksiyon içine girer, satır satır ilerler
-" F6 (Step Over)  : Fonksiyon/metoda girmez, çağrıyı tek satır çalıştırır
-" F7 (Step Out)   : Mevcut method/fonksiyondan çıkar, çağıran koda döner
-" F8 (Continue)   : Breakpoint’ten programın devam etmesini sağlar
-" F9 (Run to Cursor) : İmlecin bulunduğu satıra kadar kodu çalıştırır
-" F3 (Exit)       : Programdan çıkış yapar
+"=========================================================
+" ABAP Editor Shortcuts
+"=========================================================
+" CTRL + D         -> Duplicate current line
+" CTRL + <         -> Comment selected line
+" CTRL + SHIFT + < -> Uncomment selected line
+" CTRL + F2        -> Syntax check
+" CTRL + F8        -> Execute program
+" CTRL + SPACE     -> Auto-completion
+" F1               -> ABAP keyword help
+" CTRL + F         -> Search
+" CTRL + H         -> Find & replace
+" CTRL + Z         -> Undo
+" CTRL + Y         -> Redo
+" CTRL + SHIFT + F -> Auto format
+" CTRL + SHIFT + I -> Indent
+" CTRL + SHIFT + U -> Outdent
+
+"=========================================================
+" Debug Shortcuts
+"=========================================================
+" F5 -> Step Into
+" F6 -> Step Over
+" F7 -> Step Out
+" F8 -> Continue
+" F9 -> Run to Cursor
+" F3 -> Exit Debugger
+
+"=========================================================
+" Simple Debug Example
+"=========================================================
+WRITE: / 'Program Started'.
+
+lv_result = lv_integer * 5.
+
+WRITE: / |Result = { lv_result }|.
+
+" Breakpoint Example
+BREAK-POINT.
+
+"=========================================================
+" Internal Table Example
+"=========================================================
+APPEND 10 TO lt_numbers.
+APPEND 20 TO lt_numbers.
+APPEND 30 TO lt_numbers.
+
+LOOP AT lt_numbers INTO DATA(lv_number).
+
+  BREAK-POINT.
+
+  WRITE: / |Current Number = { lv_number }|.
+
+ENDLOOP.
+
+WRITE: / 'Program Finished'.
