@@ -1,4 +1,4 @@
-REPORT zz_06_abap_shortcut.
+REPORT ZZ_06_ABAP_SHORTCUT.
 
 *---------------------------------------------------------------------
 * Report : ZZ_06_ABAP_SHORTCUT
