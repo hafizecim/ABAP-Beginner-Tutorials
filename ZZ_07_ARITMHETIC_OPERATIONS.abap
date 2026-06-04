@@ -1,83 +1,132 @@
-REPORT ZZ_07_ARITHMETIC_OPERATIONS.
+REPORT zz_07_arithmetic_operations.
 
-*---------------------------------------------------------------------
-* Report: ZZ_07_ARITHMETIC_OPERATIONS
-* Açıklama: ABAP Aritmetik Operatör Örnekleri
-*---------------------------------------------------------------------
+*---------------------------------------------------------------------*
+* Report : ZZ_07_ARITHMETIC_OPERATIONS
+* Purpose: Demonstrates arithmetic operators in ABAP
+*---------------------------------------------------------------------*
 
-DATA: OPR1   TYPE i VALUE 14,
-      OPR2   TYPE i VALUE 3,
-      RESULT TYPE i.
+"=========================================================
+" Variable Declarations
+"=========================================================
+DATA:
+  lv_operand_1 TYPE i VALUE 14,
+  lv_operand_2 TYPE i VALUE 3,
+  lv_result    TYPE i.
 
-WRITE: 'OPR1:', OPR1,
-       / 'OPR2:', OPR2.
+DATA lv_decimal_result TYPE p LENGTH 8 DECIMALS 2.
+
+WRITE: / |Operand 1 = { lv_operand_1 }|,
+       / |Operand 2 = { lv_operand_2 }|.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* Toplama
-*---------------------------------------------------------------------
-RESULT = OPR1 + OPR2.
-WRITE: / 'RESULT = OPR1 + OPR2', RESULT.
+"=========================================================
+" Addition
+"=========================================================
+lv_result = lv_operand_1 + lv_operand_2.
+
+WRITE: / 'Addition',
+       / |{ lv_operand_1 } + { lv_operand_2 } = { lv_result }|.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* Çıkarma
-*---------------------------------------------------------------------
-RESULT = OPR1 - OPR2.
-WRITE: / 'RESULT = OPR1 - OPR2', RESULT.
+"=========================================================
+" Subtraction
+"=========================================================
+lv_result = lv_operand_1 - lv_operand_2.
+
+WRITE: / 'Subtraction',
+       / |{ lv_operand_1 } - { lv_operand_2 } = { lv_result }|.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* Çarpma
-*---------------------------------------------------------------------
-RESULT = OPR1 * OPR2.
-WRITE: / 'RESULT = OPR1 * OPR2', RESULT.
+"=========================================================
+" Multiplication
+"=========================================================
+lv_result = lv_operand_1 * lv_operand_2.
+
+WRITE: / 'Multiplication',
+       / |{ lv_operand_1 } * { lv_operand_2 } = { lv_result }|.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* Bölme
-*---------------------------------------------------------------------
-IF OPR2 <> 0.
-  RESULT = OPR1 / OPR2.
-  WRITE: / 'RESULT = OPR1 / OPR2', RESULT.
+"=========================================================
+" Division
+"=========================================================
+IF lv_operand_2 <> 0.
+
+  lv_decimal_result = lv_operand_1 / lv_operand_2.
+
+  WRITE: / 'Division',
+         / |{ lv_operand_1 } / { lv_operand_2 } = { lv_decimal_result }|.
+
 ELSE.
-  WRITE: / 'Bölme işlemi için OPR2 sıfır olamaz!'.
+
+  WRITE: / 'Division by zero is not allowed'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* Tam Bölme (DIV)
-*---------------------------------------------------------------------
-IF OPR2 <> 0.
-  RESULT = OPR1 DIV OPR2.
-  WRITE: / 'RESULT = OPR1 DIV OPR2', RESULT.
+"=========================================================
+" Integer Division (DIV)
+"=========================================================
+IF lv_operand_2 <> 0.
+
+  lv_result = lv_operand_1 DIV lv_operand_2.
+
+  WRITE: / 'Integer Division (DIV)',
+         / |{ lv_operand_1 } DIV { lv_operand_2 } = { lv_result }|.
+
 ELSE.
-  WRITE: / 'Tam bölme işlemi için OPR2 sıfır olamaz!'.
+
+  WRITE: / 'Division by zero is not allowed'.
+
 ENDIF.
 
-*---------------------------------------------------------------------
-* Modül (Kalan Bulma)
-*---------------------------------------------------------------------
-IF OPR2 <> 0.
-  RESULT = OPR1 MOD OPR2.
-  WRITE: / 'RESULT = OPR1 MOD OPR2', RESULT.
+ULINE.
+
+"=========================================================
+" Modulus (MOD)
+"=========================================================
+IF lv_operand_2 <> 0.
+
+  lv_result = lv_operand_1 MOD lv_operand_2.
+
+  WRITE: / 'Modulus (MOD)',
+         / |{ lv_operand_1 } MOD { lv_operand_2 } = { lv_result }|.
+
 ELSE.
-  WRITE: / 'Modül işlemi için OPR2 sıfır olamaz!'.
+
+  WRITE: / 'Division by zero is not allowed'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* Üst Alma (Exponentiation)
-*---------------------------------------------------------------------
-DATA OPR3 TYPE i VALUE 2.
-RESULT = OPR1 ** OPR3.
-WRITE: / 'RESULT = OPR1 ** OPR3', RESULT.
+"=========================================================
+" Exponentiation
+"=========================================================
+DATA(lv_exponent) = 2.
+
+lv_result = lv_operand_1 ** lv_exponent.
+
+WRITE: / 'Exponentiation',
+       / |{ lv_operand_1 } ** { lv_exponent } = { lv_result }|.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* Negatif Alma
-*---------------------------------------------------------------------
-DATA lv_negative TYPE i.
-lv_negative = -OPR1.
-WRITE: / 'Negatif OPR1:', lv_negative.
+"=========================================================
+" Unary Minus
+"=========================================================
+DATA(lv_negative_value) = -lv_operand_1.
+
+WRITE: / 'Unary Minus',
+       / |Negative value of { lv_operand_1 } = { lv_negative_value }|.
+
 ULINE.
+
+"=========================================================
+" End of Program
+"=========================================================
+WRITE: / 'Program completed successfully'.
