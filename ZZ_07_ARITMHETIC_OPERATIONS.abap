@@ -1,4 +1,4 @@
-REPORT zz_07_arithmetic_operations.
+REPORT ZZ_07_ARITMHETIC_OPERATIONS.
 
 *---------------------------------------------------------------------*
 * Report : ZZ_07_ARITHMETIC_OPERATIONS
