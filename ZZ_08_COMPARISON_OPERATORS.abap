@@ -1,4 +1,4 @@
-REPORT zz_08_comparison_operators.
+REPORT ZZ_08_COMPARISON_OPERATORS.
 
 *---------------------------------------------------------------------*
 * Report : ZZ_08_COMPARISON_OPERATORS
