@@ -1,84 +1,171 @@
-REPORT ZZ_08_COMPARISON_OPERATORS.
+REPORT zz_08_comparison_operators.
 
-DATA: opr1 type i value 13,
-      opr2 type i value 8.
+*---------------------------------------------------------------------*
+* Report : ZZ_08_COMPARISON_OPERATORS
+* Purpose: Demonstrates comparison and logical operators in ABAP
+*---------------------------------------------------------------------*
 
-*---------------------------------------------------------------------
-* Comparison Operators / Karşılaştırma Operatörleri
-*---------------------------------------------------------------------
+"=========================================================
+" Variable Declarations
+"=========================================================
+DATA:
+  lv_operand_1 TYPE i VALUE 13,
+  lv_operand_2 TYPE i VALUE 8.
 
-if opr1 = opr2. " eq ( equal) )
-  WRITE:  'OPR1 is equal OPR2'.   
-  ULINE.
-endif.
+WRITE: / |Operand 1 = { lv_operand_1 }|,
+       / |Operand 2 = { lv_operand_2 }|.
 
-if opr1 <> opr2. " ne (  not equal) )
-  WRITE:  'OPR1 is not equal OPR2'.   
-  ULINE.
-endif.
+ULINE.
 
-if opr1 < opr2. " lt (less than) )
-    WRITE:  'OPR1 is less than OPR2'.
-  ULINE.
-endif.
+"=========================================================
+" Comparison Operators
+"=========================================================
 
-if opr1 > opr2. " gt (greater than) )
-    WRITE:  'OPR1 is greater than OPR2'.
-  ULINE.
-endif.
+IF lv_operand_1 = lv_operand_2.
 
-if opr1 <= opr2. " le (less than or equal to) )
-    WRITE:  'OPR1 is less than or equal to OPR2'.
-  ULINE.
-endif.
+  WRITE: / 'Equal (=)',
+         / 'Operand 1 is equal to Operand 2'.
 
-if opr1 >= opr2. " ge (greater than or equal to) )
-    WRITE:  'OPR1 is greater than or equal to OPR2'.
-  ULINE.
-endif.
+ENDIF.
 
+ULINE.
 
+IF lv_operand_1 <> lv_operand_2.
 
-*---------------------------------------------------------------------
-* Logical Operators / Mantıksal Operatörler
-*---------------------------------------------------------------------
+  WRITE: / 'Not Equal (<>)',
+         / 'Operand 1 is not equal to Operand 2'.
 
-if opr1 = 13 and opr2 = 8. " and (logical AND) )
-  WRITE:  'OPR1 is equal to 13 and OPR2 is equal to 8'.
-  ULINE.
-endif.
+ENDIF.
 
-if opr1 = 13 or opr2 = 8. " or (logical OR) )
-  WRITE:  'OPR1 is equal to 13 or OPR2 is equal to 8'.
-  ULINE.
-endif.
+ULINE.
 
-if not opr1 = 13. " not (logical NOT) )
-  WRITE:  'OPR1 is not equal to 13'.
-  ULINE.
-endif.
+IF lv_operand_1 < lv_operand_2.
 
-if opr1 = 13 and not opr2 = 8. " and with not (logical AND with NOT) )
-  WRITE:  'OPR1 is equal to 13 and OPR2 is not equal to 8'.
-  ULINE.
-endif.
+  WRITE: / 'Less Than (<)',
+         / 'Operand 1 is less than Operand 2'.
 
-if opr1 = 13 or not opr2 = 8. " or with not (logical OR with NOT) )
-  WRITE:  'OPR1 is equal to 13 or OPR2 is not equal to 8'.
-  ULINE.
-endif.
+ENDIF.
 
-if opr1 = 13 and opr2 = 8 or opr1 > 10. " complex condition with AND and OR )
-  WRITE:  'OPR1 is equal to 13 and OPR2 is equal to 8 or OPR1 is greater than 10'.
-  ULINE.
-endif.
+ULINE.
 
-if opr1 = 13 and (opr2 = 8 or opr2 < 10). " complex condition with parentheses )
-  WRITE:  'OPR1 is equal to 13 and OPR2 is either equal to 8 or less than 10'.
-  ULINE.
-endif.
+IF lv_operand_1 > lv_operand_2.
 
-if opr1 = 13 and (opr2 = 8 or opr2 < 10) and not opr1 > 20. " complex condition with parentheses and NOT )
-  WRITE:  'OPR1 is equal to 13, OPR2 is either equal to 8 or less than 10, and OPR1 is not greater than 20'.
-  ULINE.
-endif.
+  WRITE: / 'Greater Than (>)',
+         / 'Operand 1 is greater than Operand 2'.
+
+ENDIF.
+
+ULINE.
+
+IF lv_operand_1 <= lv_operand_2.
+
+  WRITE: / 'Less Than or Equal (<=)',
+         / 'Operand 1 is less than or equal to Operand 2'.
+
+ENDIF.
+
+ULINE.
+
+IF lv_operand_1 >= lv_operand_2.
+
+  WRITE: / 'Greater Than or Equal (>=)',
+         / 'Operand 1 is greater than or equal to Operand 2'.
+
+ENDIF.
+
+ULINE.
+
+"=========================================================
+" Logical Operators
+"=========================================================
+
+IF lv_operand_1 = 13 AND lv_operand_2 = 8.
+
+  WRITE: / 'Logical AND',
+         / 'Both conditions are true'.
+
+ENDIF.
+
+ULINE.
+
+IF lv_operand_1 = 13 OR lv_operand_2 = 8.
+
+  WRITE: / 'Logical OR',
+         / 'At least one condition is true'.
+
+ENDIF.
+
+ULINE.
+
+IF NOT lv_operand_1 = 13.
+
+  WRITE: / 'Logical NOT',
+         / 'Operand 1 is not equal to 13'.
+
+ENDIF.
+
+ULINE.
+
+IF lv_operand_1 = 13
+   AND NOT lv_operand_2 = 8.
+
+  WRITE: / 'AND with NOT',
+         / 'Operand 1 equals 13 and Operand 2 does not equal 8'.
+
+ENDIF.
+
+ULINE.
+
+IF lv_operand_1 = 13
+   OR NOT lv_operand_2 = 8.
+
+  WRITE: / 'OR with NOT',
+         / 'Operand 1 equals 13 or Operand 2 does not equal 8'.
+
+ENDIF.
+
+ULINE.
+
+"=========================================================
+" Complex Conditions
+"=========================================================
+
+IF lv_operand_1 = 13
+   AND lv_operand_2 = 8
+   OR lv_operand_1 > 10.
+
+  WRITE: / 'Complex Condition',
+         / 'Condition using AND and OR'.
+
+ENDIF.
+
+ULINE.
+
+IF lv_operand_1 = 13
+   AND ( lv_operand_2 = 8
+         OR lv_operand_2 < 10 ).
+
+  WRITE: / 'Condition with Parentheses',
+         / 'Operand 2 equals 8 or is less than 10'.
+
+ENDIF.
+
+ULINE.
+
+IF lv_operand_1 = 13
+   AND ( lv_operand_2 = 8
+         OR lv_operand_2 < 10 )
+   AND NOT lv_operand_1 > 20.
+
+  WRITE: / 'Complex Condition with NOT',
+         / 'All conditions are satisfied'.
+
+ENDIF.
+
+ULINE.
+
+"=========================================================
+" End of Program
+"=========================================================
+
+WRITE: / 'Program completed successfully'.
