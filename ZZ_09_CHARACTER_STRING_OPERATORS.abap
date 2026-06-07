@@ -1,160 +1,156 @@
-REPORT ZZ_09_CHARACTER_STRING_OPERATORS.
+REPORT zz_09_character_string_operators.
 
-*---------------------------------------------------------------------
-* Report: ZZ_09_CHARACTER_STRING_OPERATORS
-* Açıklama: ABAP Character/String Operatör Örnekleri
-*---------------------------------------------------------------------
+*---------------------------------------------------------------------*
+* Report : ZZ_09_CHARACTER_STRING_OPERATORS
+* Purpose: Demonstrates character and string comparison operators
+*---------------------------------------------------------------------*
 
-DATA: srt1  TYPE string,
-      srt2  TYPE string,
-      srt3  TYPE string,
-      srt4  TYPE string,
-      srt5  TYPE string,
-      srt6  TYPE string,
-      srt7  TYPE string,
-      srt8  TYPE string,
-      srt9  TYPE string,
-      srt10 TYPE string,
-      srt11 TYPE string,
-      srt12 TYPE string,
-      srt13 TYPE string,
-      srt14 TYPE string,
-      srt15 TYPE string,
-      srt16 TYPE string,
-      srt17 TYPE string,
-      srt18 TYPE string.
+DATA:
+  lv_text    TYPE string,
+  lv_pattern TYPE string.
 
-*---------------------------------------------------------------------
-* CO (Concatenation / İçeriyor mu?)
-* Kontrol: STR1'in içinde STR2 var mı?
-*---------------------------------------------------------------------
-srt1 = 'Abap Programming'.
-srt2 = 'Abap Programming for Beginners'.
+"=========================================================
+" CO - Contains Only
+"=========================================================
+lv_text    = 'ABAP'.
+lv_pattern = 'ABAPXYZ'.
 
-IF srt1 CO srt2. " CO Operatörü: STR1, STR2'yi içeriyor mu?
-  WRITE: / 'CO: Process True'. 
+IF lv_text CO lv_pattern.
+
+  WRITE: / 'CO (Contains Only): TRUE'.
+
 ELSE.
-  WRITE: / 'CO: Process False'.
-  " Sonuç: FALSE (STR2, STR1'in içinde tam olarak yok)
+
+  WRITE: / 'CO (Contains Only): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* CN (Contains / İçeriyor)
-* Kontrol: STR4'nin içinde STR3 var mı?
-*---------------------------------------------------------------------
-srt3 = 'Abap Developer'.
-srt4 = 'Abap Programming for Beginners'.
+"=========================================================
+" CN - Contains Not Only
+"=========================================================
+lv_text    = 'ABAP123'.
+lv_pattern = 'ABAP'.
 
-IF srt4 CN srt3. " CN Operatörü: STR4, STR3'ü içeriyor mu?
-  WRITE: / 'CN: Process True'.
+IF lv_text CN lv_pattern.
+
+  WRITE: / 'CN (Contains Not Only): TRUE'.
+
 ELSE.
-  WRITE: / 'CN: Process False'.
-  " Sonuç: FALSE (STR4, STR3'ü içermez)
+
+  WRITE: / 'CN (Contains Not Only): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* CA (Case Sensitive Contains / Büyük-küçük harf duyarlı)
-* Kontrol: STR5'in içinde STR6 var mı? (büyük/küçük harf duyarlı)
-*---------------------------------------------------------------------
-srt5 = 'Ab'.
-srt6 = 'Abap programming'.
+"=========================================================
+" CA - Contains Any
+"=========================================================
+lv_text    = 'ABAP'.
+lv_pattern = 'XYZA'.
 
-IF srt5 CA srt6.
-  WRITE: / 'CA: Process True'.
-  " Sonuç: TRUE (case-sensitive olarak 'Ab' bulunur)
+IF lv_text CA lv_pattern.
+
+  WRITE: / 'CA (Contains Any): TRUE'.
+
 ELSE.
-  WRITE: / 'CA: Process False'.
+
+  WRITE: / 'CA (Contains Any): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* CS (Case Sensitive / Eşitlik büyük/küçük harf duyarlı)
-* Kontrol: STR7'in içinde STR8 var mı? (büyük/küçük harf duyarlı)
-*---------------------------------------------------------------------
-srt7 = 'Abap Programming'.
-srt8 = 'Abap Programming for Beginners'.
+"=========================================================
+" CS - Contains String
+"=========================================================
+lv_text    = 'ABAP Programming'.
+lv_pattern = 'ABAP'.
 
-IF srt7 CS srt8.
-  WRITE: / 'CS: Process True'.
-  " Sonuç: TRUE (STR7, STR8'in başlangıcıyla eşleşiyor)
+IF lv_text CS lv_pattern.
+
+  WRITE: / 'CS (Contains String): TRUE'.
+
 ELSE.
-  WRITE: / 'CS: Process False'.
+
+  WRITE: / 'CS (Contains String): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* CP (Contains Pattern / Desen içeriyor)
-* Kontrol: STR9'un içinde STR10 deseni var mı?
-*---------------------------------------------------------------------
-srt9 = 'Abap Programming'.
-srt10 = 'Abap*gramming*Beginners'.
+"=========================================================
+" CP - Contains Pattern
+"=========================================================
+lv_text    = 'ABAP Programming'.
+lv_pattern = 'ABAP*'.
 
-IF srt9 CP srt10.
-  WRITE: / 'CP: Process True'.
-  " Sonuç: TRUE (* joker karakteri ile eşleşir)
+IF lv_text CP lv_pattern.
+
+  WRITE: / 'CP (Contains Pattern): TRUE'.
+
 ELSE.
-  WRITE: / 'CP: Process False'.
+
+  WRITE: / 'CP (Contains Pattern): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* NA (Not Contains / İçermiyor)
-* Kontrol: STR11, STR12'yi içermiyor mu?
-*---------------------------------------------------------------------
-srt11 = 'Abap Programming'.
-srt12 = 'Abap Programming for Beginners'.
+"=========================================================
+" NA - Not Contains Any
+"=========================================================
+lv_text    = 'ABAP'.
+lv_pattern = 'XYZ'.
 
-IF srt11 NA srt12.
-  WRITE: / 'NA: Process True'.
-  " Sonuç: TRUE (STR11, STR12'yi içermez)
+IF lv_text NA lv_pattern.
+
+  WRITE: / 'NA (Not Contains Any): TRUE'.
+
 ELSE.
-  WRITE: / 'NA: Process False'.
+
+  WRITE: / 'NA (Not Contains Any): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* NE (Not Equal / Eşit Değil)
-* Kontrol: STR13, STR14'e eşit değil mi?
-*---------------------------------------------------------------------
-srt13 = 'Abap Programming'.
-srt14 = 'Abap Programming for Beginners'.
+"=========================================================
+" NS - Not Contains String
+"=========================================================
+lv_text    = 'ABAP Programming'.
+lv_pattern = 'JAVA'.
 
-IF srt13 NE srt14.
-  WRITE: / 'NE: Process True'.
-  " Sonuç: TRUE (eşit değil)
+IF lv_text NS lv_pattern.
+
+  WRITE: / 'NS (Not Contains String): TRUE'.
+
 ELSE.
-  WRITE: / 'NE: Process False'.
+
+  WRITE: / 'NS (Not Contains String): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* NS (Not Starts With / Başlamıyor)
-* Kontrol: STR15, STR16 ile başlamıyor mu?
-*---------------------------------------------------------------------
-srt15 = 'Abap Programming'.
-srt16 = 'Abap Programming for Beginners'.
+"=========================================================
+" NP - Not Contains Pattern
+"=========================================================
+lv_text    = 'ABAP Programming'.
+lv_pattern = 'JAVA*'.
 
-IF srt15 NS srt16.
-  WRITE: / 'NS: Process True'.
-  " Sonuç: TRUE (STR15, STR16 ile başlamıyor)
+IF lv_text NP lv_pattern.
+
+  WRITE: / 'NP (Not Contains Pattern): TRUE'.
+
 ELSE.
-  WRITE: / 'NS: Process False'.
+
+  WRITE: / 'NP (Not Contains Pattern): FALSE'.
+
 ENDIF.
+
 ULINE.
 
-*---------------------------------------------------------------------
-* NP (Not Pattern / Desen ile eşleşmiyor)
-* Kontrol: STR17, STR18 deseni ile eşleşmiyor mu?
-*---------------------------------------------------------------------
-srt17 = 'Abap Programming'.
-srt18 = 'Abap*gramming*Beginners'.
-
-IF srt17 NP srt18.
-  WRITE: / 'NP: Process True'.
-ELSE.
-  WRITE: / 'NP: Process False'.
-  " Sonuç: FALSE (desen ile eşleşir, NOT olmadığı için FALSE)
-ENDIF.
-ULINE.
+WRITE: / 'Program completed successfully'.
