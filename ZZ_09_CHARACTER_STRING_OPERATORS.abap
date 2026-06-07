@@ -1,4 +1,4 @@
-REPORT zz_09_character_string_operators.
+REPORT ZZ_09_CHARACTER_STRING_OPERATORS.
 
 *---------------------------------------------------------------------*
 * Report : ZZ_09_CHARACTER_STRING_OPERATORS
