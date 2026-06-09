@@ -1,8 +1,21 @@
-REPORT zz_10_string_processing.
+REPORT ZZ_10_STRING_PROCESSING.
 
 *---------------------------------------------------------------------*
 * Report : ZZ_10_STRING_PROCESSING
 * Purpose: Demonstrates common string processing operations in ABAP
+*---------------------------------------------------------------------*
+*---------------------------------------------------------------------*
+* Topics Covered
+*---------------------------------------------------------------------*
+* 1. CONCATENATE - Combine Strings
+* 2. CONDENSE    - Remove Spaces
+* 3. STRLEN      - Calculate String Length
+* 4. REPLACE     - Replace Text
+* 5. SEARCH      - Search Within Text
+* 6. SHIFT       - Shift Characters
+* 7. SPLIT       - Split Text Into Parts
+* 8. TRANSLATE   - Convert Character Case
+* 9. SUBSTRING   - Extract Part of a String
 *---------------------------------------------------------------------*
 
 "=========================================================
@@ -14,7 +27,7 @@ DATA:
   lv_result_text  TYPE string.
 
 "=========================================================
-" CONCATENATE
+" 1. CONCATENATE
 "=========================================================
 CONCATENATE lv_first_text
             lv_second_text
@@ -46,7 +59,7 @@ WRITE: / 'Concatenate (With Underscore):',
 ULINE.
 
 "=========================================================
-" CONDENSE
+" 2. CONDENSE
 "=========================================================
 DATA(lv_text_with_spaces) = 'ABAP     Programming'.
 
@@ -58,7 +71,7 @@ WRITE: / 'Condense (Remove All Spaces):',
 ULINE.
 
 "=========================================================
-" STRLEN
+" 3. STRLEN
 "=========================================================
 DATA(lv_text_length) = strlen( lv_second_text ).
 
@@ -68,7 +81,7 @@ WRITE: / 'String Length:',
 ULINE.
 
 "=========================================================
-" REPLACE
+" 4. REPLACE
 "=========================================================
 DATA(lv_replace_text) = 'ABAP Programming'.
 
@@ -82,7 +95,7 @@ WRITE: / 'Replace:',
 ULINE.
 
 "=========================================================
-" SEARCH
+" 5. SEARCH
 "=========================================================
 DATA(lv_search_text) = 'ABAP Programming'.
 
@@ -124,7 +137,7 @@ WRITE: / 'SEARCH ABBREVIATED:',
 ULINE.
 
 "=========================================================
-" SHIFT
+" 6. SHIFT
 "=========================================================
 DATA(lv_shift_text) = '0123450'.
 
@@ -161,7 +174,7 @@ WRITE: / 'DELETE TRAILING ZEROS:',
 ULINE.
 
 "=========================================================
-" SPLIT
+" 7. SPLIT
 "=========================================================
 DATA(lv_csv_text) = 'ABAP,Programming,Development'.
 
@@ -182,7 +195,7 @@ ENDLOOP.
 ULINE.
 
 "=========================================================
-" TRANSLATE
+" 8. TRANSLATE
 "=========================================================
 DATA(lv_translate_text) = 'ABAP Programming'.
 
@@ -204,7 +217,7 @@ WRITE: / 'Using aA:',
 ULINE.
 
 "=========================================================
-" SUBSTRING
+" 9. SUBSTRING
 "=========================================================
 DATA(lv_source_text) = 'ABAP Programming'.
 
