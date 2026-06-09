@@ -1,169 +1,229 @@
-REPORT ZZ_10_STRING_PROCESSING.
+REPORT zz_10_string_processing.
 
-*----------------------------------------------------------------------
-* Program: ZZ_10_STRING_PROCESSING
-* Konu   : ABAP’ta String İşlemleri
-* Açıklama:
-*   Bu program ABAP dilinde string manipülasyonu örneklerini göstermektedir.
-*   İçerik:
-*     - CONCATENATE (String birleştirme)
-*     - CONDENSE (Boşlukları kaldırma)
-*     - STRLEN (Uzunluk bulma)
-*     - REPLACE (Metin içinde değiştirme)
-*     - SEARCH (Metin içinde arama)
-*     - SHIFT (Karakter kaydırma)
-*     - SPLIT (Metni parçalama)
-*     - TRANSLATE (Büyük/küçük harf dönüşümü ve karakter değiştirme)
-*     - SUBSTRING (Alt string alma)
-*----------------------------------------------------------------------
+*---------------------------------------------------------------------*
+* Report : ZZ_10_STRING_PROCESSING
+* Purpose: Demonstrates common string processing operations in ABAP
+*---------------------------------------------------------------------*
 
-*----------------------------------------------------------------------
-DATA str1 TYPE string VALUE 'ABAP',
-     str2 TYPE string VALUE 'Programing'. " Dikkat: 'Programing' yerine 'Programming' olabilir
+"=========================================================
+" Variable Declarations
+"=========================================================
+DATA:
+  lv_first_text   TYPE string VALUE 'ABAP',
+  lv_second_text  TYPE string VALUE 'Programming',
+  lv_result_text  TYPE string.
 
-DATA str3 TYPE string.
-DATA str4 TYPE string.
+"=========================================================
+" CONCATENATE
+"=========================================================
+CONCATENATE lv_first_text
+            lv_second_text
+       INTO lv_result_text.
 
-*----------------------------------------------------------------------
-* CONCATENATE - String birleştirme
-*----------------------------------------------------------------------
-CONCATENATE str1 str2 INTO str3. " İki stringi boşluksuz birleştir
-WRITE: / 'Concatenated String:', str3.  " Çıktı: ABAPPrograming
+WRITE: / 'Concatenate (Without Separator):',
+       / lv_result_text.
+
 ULINE.
 
-CONCATENATE str1 str2 INTO str4 SEPARATED BY space. " Araya boşluk ekleyerek birleştir
-WRITE: / 'Concatenated String with space:', str4. " Çıktı: ABAP Programing
+CONCATENATE lv_first_text
+            lv_second_text
+       INTO lv_result_text
+       SEPARATED BY space.
+
+WRITE: / 'Concatenate (With Space):',
+       / lv_result_text.
+
 ULINE.
 
-CONCATENATE str1 str2 INTO str3 SEPARATED BY '_'. " Araya alt çizgi ekleyerek birleştir
-WRITE: / 'Concatenated String with underscore:', str3. " Çıktı: ABAP_Programing
+CONCATENATE lv_first_text
+            lv_second_text
+       INTO lv_result_text
+       SEPARATED BY '_'.
+
+WRITE: / 'Concatenate (With Underscore):',
+       / lv_result_text.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* CONDENSE - Boşlukları kaldırma
-*----------------------------------------------------------------------
-DATA lv_nogaps TYPE string VALUE 'Abap   Programing'. " Fazladan boşluklu ifade
-CONDENSE lv_nogaps NO-GAPS. " Tüm boşlukları kaldır
-WRITE: / 'Condensed String:', lv_nogaps. " Çıktı: AbapPrograming
+"=========================================================
+" CONDENSE
+"=========================================================
+DATA(lv_text_with_spaces) = 'ABAP     Programming'.
+
+CONDENSE lv_text_with_spaces NO-GAPS.
+
+WRITE: / 'Condense (Remove All Spaces):',
+       / lv_text_with_spaces.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* STRLEN - String uzunluğunu bulma
-*----------------------------------------------------------------------
-DATA lv_string TYPE string VALUE 'processing'.
-DATA lv_strlen TYPE i.
+"=========================================================
+" STRLEN
+"=========================================================
+DATA(lv_text_length) = strlen( lv_second_text ).
 
-lv_strlen = strlen( lv_string ).
-WRITE: / 'String Length:', lv_strlen. " Çıktı: 10
+WRITE: / 'String Length:',
+       / lv_text_length.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* REPLACE - Metin içinde değiştirme
-*----------------------------------------------------------------------
-DATA lv_replace TYPE string VALUE 'ABAP Programming'.
-REPLACE 'Programming' IN lv_replace WITH 'Development'. " 'Programming' kelimesini 'Development' ile değiştir
-WRITE: / 'Replaced String:', lv_replace. " Çıktı: ABAP Development
+"=========================================================
+" REPLACE
+"=========================================================
+DATA(lv_replace_text) = 'ABAP Programming'.
+
+REPLACE 'Programming'
+   IN lv_replace_text
+ WITH 'Development'.
+
+WRITE: / 'Replace:',
+       / lv_replace_text.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* SEARCH - Metin içinde arama
-*----------------------------------------------------------------------
-DATA lv_search TYPE string VALUE 'ABAP Programming'.
-DATA lv_pos TYPE i.
+"=========================================================
+" SEARCH
+"=========================================================
+DATA(lv_search_text) = 'ABAP Programming'.
 
-" Fonksiyon tarzı arama
-lv_pos = search( val = lv_search sub = 'Programming' ).
-IF lv_pos > 0.
-  WRITE: / 'Search found at position:', lv_pos. " Çıktı: 5
+DATA(lv_position) =
+  search(
+      val = lv_search_text
+      sub = 'Programming' ).
+
+IF lv_position > 0.
+
+  WRITE: / 'Search Function:',
+         / |Found at position { lv_position }|.
+
 ELSE.
-  WRITE: / 'Search not found'.
+
+  WRITE: / 'Search Function:',
+         / 'Text not found'.
+
 ENDIF.
+
 ULINE.
 
-" Klasik arama
-SEARCH lv_search FOR 'in'.
-WRITE: / 'Search for "in":', sy-subrc, sy-fdpos.
-" sy-subrc = 0 → bulundu
-" sy-subrc = 4 → bulunamadı
-" sy-fdpos → bulunduğu pozisyon
+SEARCH lv_search_text FOR 'ing'.
+
+WRITE: / 'Classic SEARCH:',
+       / |SY-SUBRC = { sy-subrc }|,
+       / |SY-FDPOS = { sy-fdpos }|.
+
 ULINE.
 
-" Kısaltma ile arama (ABBREVIATED)
-SEARCH lv_search FOR 'Progm' ABBREVIATED.
-WRITE: / 'Search for "Progm" ABBREVIATED:', sy-subrc, sy-fdpos.
+SEARCH lv_search_text
+   FOR 'Progm'
+   ABBREVIATED.
+
+WRITE: / 'SEARCH ABBREVIATED:',
+       / |SY-SUBRC = { sy-subrc }|,
+       / |SY-FDPOS = { sy-fdpos }|.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* SHIFT - Karakter kaydırma
-*----------------------------------------------------------------------
-DATA lv_shift TYPE string VALUE '0123450'.
+"=========================================================
+" SHIFT
+"=========================================================
+DATA(lv_shift_text) = '0123450'.
 
-SHIFT lv_shift BY 2 PLACES. " Baştan 2 karakter siler
-WRITE: / 'Shifted String:', lv_shift. " Çıktı: 23450
+SHIFT lv_shift_text BY 2 PLACES.
 
-SHIFT lv_shift LEFT BY 1 PLACES.
-WRITE: / 'Shifted String Left:', lv_shift.
+WRITE: / 'SHIFT BY 2:',
+       / lv_shift_text.
 
-SHIFT lv_shift RIGHT BY 1 PLACES.
-WRITE: / 'Shifted String Right:', lv_shift.
+SHIFT lv_shift_text LEFT BY 1 PLACES.
 
-SHIFT lv_shift UP TO '3' RIGHT CIRCULAR. " '3' karakterine kadar sağa döngüsel kaydır
-WRITE: / 'Shifted String Up to 3 Right Circular:', lv_shift.
+WRITE: / 'SHIFT LEFT:',
+       / lv_shift_text.
 
-SHIFT lv_shift LEFT DELETE LEADING '0'. " Baştaki '0' ları sil
-WRITE: / 'Shifted String Left Delete Leading 0:', lv_shift.
+SHIFT lv_shift_text RIGHT BY 1 PLACES.
 
-SHIFT lv_shift RIGHT DELETE TRAILING '0'. " Sondaki '0' ları sil
-WRITE: / 'Shifted String Right Delete Trailing 0:', lv_shift.
+WRITE: / 'SHIFT RIGHT:',
+       / lv_shift_text.
+
+SHIFT lv_shift_text UP TO '3' RIGHT CIRCULAR.
+
+WRITE: / 'SHIFT RIGHT CIRCULAR:',
+       / lv_shift_text.
+
+SHIFT lv_shift_text LEFT DELETE LEADING '0'.
+
+WRITE: / 'DELETE LEADING ZEROS:',
+       / lv_shift_text.
+
+SHIFT lv_shift_text RIGHT DELETE TRAILING '0'.
+
+WRITE: / 'DELETE TRAILING ZEROS:',
+       / lv_shift_text.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* SPLIT - Stringi parçalama
-*----------------------------------------------------------------------
-DATA lv_split TYPE string VALUE 'ABAP,Programming,Development'.
-DATA lt_split TYPE TABLE OF string.
+"=========================================================
+" SPLIT
+"=========================================================
+DATA(lv_csv_text) = 'ABAP,Programming,Development'.
 
-SPLIT lv_split AT ',' INTO TABLE lt_split. " Virgüle göre parçala
-LOOP AT lt_split INTO DATA(lv_part).
-  WRITE: / 'Split Part:', lv_part.
+DATA lt_parts TYPE TABLE OF string.
+
+SPLIT lv_csv_text
+   AT ','
+ INTO TABLE lt_parts.
+
+WRITE: / 'Split Result:'.
+
+LOOP AT lt_parts INTO DATA(lv_part).
+
+  WRITE: / lv_part.
+
 ENDLOOP.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* TRANSLATE - Karakter dönüşümü
-*----------------------------------------------------------------------
-DATA lv_translate TYPE string VALUE 'ABAP Programming'.
+"=========================================================
+" TRANSLATE
+"=========================================================
+DATA(lv_translate_text) = 'ABAP Programming'.
 
-TRANSLATE lv_translate TO UPPER CASE. " Büyük harfe çevir
-WRITE: / 'Translated String to Upper Case:', lv_translate.
+TRANSLATE lv_translate_text TO UPPER CASE.
 
-TRANSLATE lv_translate TO LOWER CASE. " Küçük harfe çevir
-WRITE: / 'Translated String to Lower Case:', lv_translate.
+WRITE: / 'Upper Case:',
+       / lv_translate_text.
 
-TRANSLATE lv_translate USING 'aA'. " 'a' → 'A', 'A' → 'a' dönüşümü
-WRITE: / 'Translated String using Aa:', lv_translate.
+TRANSLATE lv_translate_text TO LOWER CASE.
+
+WRITE: / 'Lower Case:',
+       / lv_translate_text.
+
+TRANSLATE lv_translate_text USING 'aA'.
+
+WRITE: / 'Using aA:',
+       / lv_translate_text.
+
 ULINE.
 
-*----------------------------------------------------------------------
-* SUBSTRING - Alt string alma
-*----------------------------------------------------------------------
-DATA lv_substring TYPE string VALUE 'ABAP Programming'.
-DATA lv_substr TYPE string.
+"=========================================================
+" SUBSTRING
+"=========================================================
+DATA(lv_source_text) = 'ABAP Programming'.
 
-lv_substr = lv_substring+5(11). " 5. karakterden başlayarak 11 karakter al
-WRITE: / 'Substring:', lv_substr.
+DATA(lv_substring_1) = lv_source_text+5(11).
+DATA(lv_substring_2) = lv_source_text+5.
+DATA(lv_substring_3) = lv_source_text(4).
 
-DATA lv_substring1 TYPE string VALUE 'Abap Programing'.
-DATA lv_substring2 TYPE string.
-DATA lv_substring3 TYPE string.
-DATA lv_substring4 TYPE string.
+WRITE: / 'Substring 1:',
+       / lv_substring_1.
 
-lv_substring2 = lv_substring1+5(7). " 5. karakterden başlayarak 7 karakter al
-WRITE: / 'Substring 1:', lv_substring2.
+WRITE: / 'Substring 2:',
+       / lv_substring_2.
 
-lv_substring3 = lv_substring1+5. " 5. karakterden başlayarak kalanını al
-WRITE: / 'Substring 2:', lv_substring3.
+WRITE: / 'Substring 3:',
+       / lv_substring_3.
 
-lv_substring4 = lv_substring1(4). " İlk 4 karakteri al
-WRITE: / 'Substring 3:', lv_substring4.
 ULINE.
+
+"=========================================================
+" End of Program
+"=========================================================
+WRITE: / 'Program completed successfully'.
