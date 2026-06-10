@@ -1,36 +1,72 @@
 REPORT ZZ_12_NESTED_IF_STATEMENT.
 
-*----------------------------------------------------------------------
-* Program: ZZ_12_NESTED_IF_STATEMENT
-* Konu   : ABAP’ta İç İçe (Nested) IF Kullanımı
-* Açıklama:
-*   Bu program, üç sayıyı karşılaştırarak en büyüğünü bulur.
-*   İçerik:
-*     - Birden fazla koşulun tek IF içinde kontrolü (AND kullanımı)
-*     - İç içe IF blokları
-*     - ELSEIF ve ELSE kullanımı
-----------------------------------------------------------------------
+*---------------------------------------------------------------------*
+* Report : ZZ_12_NESTED_IF_STATEMENT
+* Purpose: Demonstrates nested IF statements in ABAP
+*---------------------------------------------------------------------*
 
-* Değişken tanımları
-DATA: num1 TYPE i,
-      num2 TYPE i,
-      num3 TYPE i.
+*---------------------------------------------------------------------*
+* Topics Covered
+*---------------------------------------------------------------------*
+* 1. Nested IF Statement
+* 2. Multiple Conditions with AND
+* 3. ELSEIF Statement
+* 4. Finding the Largest Number
+*---------------------------------------------------------------------*
 
-* Örnek değerler
-num1 = 1.
-num2 = 2.
-num3 = 3.
+"=========================================================
+" Variable Declarations
+"=========================================================
+DATA:
+  lv_number_1 TYPE i VALUE 1,
+  lv_number_2 TYPE i VALUE 2,
+  lv_number_3 TYPE i VALUE 3.
 
-IF num1 = num2 AND num2 = num3.
+WRITE: / 'Number 1:', lv_number_1,
+       / 'Number 2:', lv_number_2,
+       / 'Number 3:', lv_number_3.
+
+ULINE.
+
+"=========================================================
+" 1. Check Whether All Numbers Are Equal
+"=========================================================
+IF lv_number_1 = lv_number_2
+   AND lv_number_2 = lv_number_3.
+
   WRITE: / 'All numbers are equal'.
-ELSEIF num1 > num2.
-  IF num1 > num3.
-    WRITE: / 'Biggest number is num1'.
+
+"=========================================================
+" 2. Nested IF Statement
+"=========================================================
+ELSEIF lv_number_1 > lv_number_2.
+
+  IF lv_number_1 > lv_number_3.
+
+    WRITE: / |Largest number is { lv_number_1 }|.
+
   ELSE.
-    WRITE: / 'Biggest number is num3'.
+
+    WRITE: / |Largest number is { lv_number_3 }|.
+
   ENDIF.
-ELSEIF num1 > num3.
-  WRITE: / 'Biggest number is num2'.
+
+"=========================================================
+" 3. ELSEIF Statement
+"=========================================================
+ELSEIF lv_number_2 > lv_number_3.
+
+  WRITE: / |Largest number is { lv_number_2 }|.
+
+"=========================================================
+" 4. ELSE Statement
+"=========================================================
 ELSE.
-  WRITE: / 'Biggest number is num3'.
+
+  WRITE: / |Largest number is { lv_number_3 }|.
+
 ENDIF.
+
+ULINE.
+
+WRITE: / 'Program completed successfully'.
