@@ -1,4 +1,4 @@
-REPORT zz_11_if_elseif_else_statement.
+ZZ_11_IF_ELSEIF_ELSE_STATEMENT.
 
 *---------------------------------------------------------------------*
 * Report : ZZ_11_IF_ELSEIF_ELSE_STATEMENT
