@@ -1,134 +1,189 @@
-REPORT ZZ_11_IF_ELSEIF_ELSE_STATEMENT.
+REPORT zz_11_if_elseif_else_statement.
 
-*----------------------------------------------------------------------
-* Program: ZZ_11_IF_ELSEIF_ELSE_STATEMENT
-* Konu   : ABAP’ta IF-ELSEIF-ELSE ve farklı kontrol yapıları
-* Açıklama:
-*   Bu program ABAP dilinde IF koşulları ile çeşitli veri kontrollerini
-*   göstermektedir.
-*   İçerik:
-*     - Sayısal karşılaştırmalar (=, <>, >, <, >=, <=)
-*     - Aralık kontrolü (BETWEEN)
-*     - Liste kontrolü (IN)
-*     - Veri tipi kontrolleri (IS NUMERIC, IS INITIAL vb.)
-*     - Field-symbol ve referans nesne kontrolleri
-*     - Internal table kontrolü
-----------------------------------------------------------------------
+*---------------------------------------------------------------------*
+* Report : ZZ_11_IF_ELSEIF_ELSE_STATEMENT
+* Purpose: Demonstrates conditional statements in ABAP
+*---------------------------------------------------------------------*
 
-*---------------------------
-* 1) Basit karşılaştırmalar
-*---------------------------
-DATA: num1 TYPE i VALUE 10,
-      num2 TYPE i VALUE 20,
-      result TYPE i.
+*---------------------------------------------------------------------*
+* Topics Covered
+*---------------------------------------------------------------------*
+* 1. IF Statement
+* 2. IF ELSE Statement
+* 3. IF ELSEIF ELSE Statement
+* 4. IS INITIAL Check
+* 5. BETWEEN Condition
+* 6. IN Condition
+* 7. IS NUMERIC Check
+* 8. IS ASSIGNED Check
+* 9. IS BOUND Check
+* 10. Internal Table IS INITIAL Check
+*---------------------------------------------------------------------*
 
-" Eşitlik kontrolü
-IF num1 EQ num2. " EQ ya da = kullanılabilir
-  WRITE: / 'Num1 is equal to Num2'.
+DATA:
+  lv_number_1 TYPE i VALUE 10,
+  lv_number_2 TYPE i VALUE 20.
+
+"=========================================================
+" 1. IF Statement
+"=========================================================
+
+IF lv_number_1 <> lv_number_2.
+
+  WRITE: / 'Numbers are different'.
+
 ENDIF.
 
-" Eşit değil kontrolü
-IF num1 NE num2. " NE ya da <> kullanılabilir
-  WRITE: / 'Num1 is not equal to Num2'.
-ENDIF.
+ULINE.
 
-" IF - ELSE kullanımı
-IF num1 EQ num2.
-  WRITE: / 'Num1 is equal to Num2'.
+"=========================================================
+" 2. IF ELSE Statement
+"=========================================================
+
+IF lv_number_1 = lv_number_2.
+
+  WRITE: / 'Numbers are equal'.
+
 ELSE.
-  WRITE: / 'Num1 is not equal to Num2'.
+
+  WRITE: / 'Numbers are not equal'.
+
 ENDIF.
 
-" IF - ELSEIF - ELSE zinciri
-IF num1 EQ num2.
-  WRITE: / 'Num1 is equal to Num2'.
-ELSEIF num1 NE num2.
-  WRITE: / 'Num1 is not equal to Num2'.
-ELSEIF num1 GT num2.
-  WRITE: / 'Num1 is greater than Num2'.
-ELSEIF num1 LT num2.
-  WRITE: / 'Num1 is less than Num2'.
-ELSEIF num1 GE num2.
-  WRITE: / 'Num1 is greater than or equal to Num2'.
-ELSEIF num1 LE num2.
-  WRITE: / 'Num1 is less than or equal to Num2'.
+ULINE.
+
+"=========================================================
+" 3. IF ELSEIF ELSE Statement
+"=========================================================
+
+IF lv_number_1 > lv_number_2.
+
+  WRITE: / 'Number 1 is greater'.
+
+ELSEIF lv_number_1 < lv_number_2.
+
+  WRITE: / 'Number 1 is smaller'.
+
 ELSE.
-  WRITE: / 'Num1 and Num2 are not equal'.
+
+  WRITE: / 'Numbers are equal'.
+
 ENDIF.
 
+ULINE.
 
-*------------------------------------------
-* 2) Özel durumlar ve veri tipi kontrolleri
-*------------------------------------------
-DATA(num1_val) = 0.                        " Başlangıç değeri 0
-DATA(num_str) TYPE string VALUE '123'.     " Metin olarak sayı örneği
-DATA(lr_ref) TYPE REF TO data.             " Generic data reference
-FIELD-SYMBOLS: <fs_any> TYPE any.
+"=========================================================
+" 4. IS INITIAL Check
+"=========================================================
 
-" Num1 için sıralı kontrol örneği
-IF num1_val IS INITIAL.
-  WRITE: / 'Num1 is initial (zero) ->', num1_val.
-ELSEIF num1_val BETWEEN 115 AND 2215.
-  WRITE: / 'Num1 is between 115 and 2215 ->', num1_val.
-ELSEIF num1_val IN 10 20 30.
-  WRITE: / 'Num1 is in the list (10,20,30) ->', num1_val.
-ELSE.
-  WRITE: / 'Num1 did not match previous checks ->', num1_val.
+DATA(lv_value) = 0.
+
+IF lv_value IS INITIAL.
+
+  WRITE: / 'Value is initial'.
+
 ENDIF.
 
-" Karakter dizesinin sayısal olup olmadığını kontrol etme
-IF num_str IS NUMERIC.
-  WRITE: / 'num_str IS NUMERIC (metin sayısal):', num_str.
-ELSE.
-  WRITE: / 'num_str is NOT numeric text:', num_str.
+ULINE.
+
+"=========================================================
+" 5. BETWEEN Condition
+"=========================================================
+
+DATA(lv_score) = 150.
+
+IF lv_score BETWEEN 100 AND 200.
+
+  WRITE: / 'Score is within range'.
+
 ENDIF.
 
+ULINE.
 
-*---------------------------------
-* 3) Field-symbol atama kontrolü
-*---------------------------------
-CREATE DATA lr_ref TYPE i.          " Referans veri oluştur
-ASSIGN lr_ref->* TO <fs_any>.       " Field-symbol'e ata
+"=========================================================
+" 6. IN Condition
+"=========================================================
 
-IF <fs_any> IS ASSIGNED.
-  WRITE: / 'Field-symbol is assigned.'.
-  <fs_any> = 42.
-  WRITE: / 'Value via field-symbol:', <fs_any>.
-ELSE.
-  WRITE: / 'Field-symbol is NOT assigned.'.
+DATA(lv_option) = 20.
+
+IF lv_option IN ( 10, 20, 30 ).
+
+  WRITE: / 'Value found in list'.
+
 ENDIF.
 
+ULINE.
 
-*-----------------------------------
-* 4) Nesne referansı IS BOUND kontrolü
-*-----------------------------------
+"=========================================================
+" 7. IS NUMERIC Check
+"=========================================================
+
+DATA(lv_numeric_text) TYPE string VALUE '12345'.
+
+IF lv_numeric_text IS NUMERIC.
+
+  WRITE: / 'Text contains only numeric characters'.
+
+ENDIF.
+
+ULINE.
+
+"=========================================================
+" 8. IS ASSIGNED Check
+"=========================================================
+
+DATA lr_data TYPE REF TO data.
+
+FIELD-SYMBOLS <fs_data> TYPE any.
+
+CREATE DATA lr_data TYPE i.
+
+ASSIGN lr_data->* TO <fs_data>.
+
+IF <fs_data> IS ASSIGNED.
+
+  WRITE: / 'Field-symbol is assigned'.
+
+ENDIF.
+
+ULINE.
+
+"=========================================================
+" 9. IS BOUND Check
+"=========================================================
+
 CLASS lcl_demo DEFINITION.
   PUBLIC SECTION.
-    METHODS: ctor.
+    METHODS constructor.
 ENDCLASS.
 
 CLASS lcl_demo IMPLEMENTATION.
-  METHOD ctor.
+  METHOD constructor.
   ENDMETHOD.
 ENDCLASS.
 
-DATA(obj) TYPE REF TO lcl_demo.
-CREATE OBJECT obj.
+DATA(lo_demo) = NEW lcl_demo( ).
 
-IF obj IS BOUND.
-  WRITE: / 'Object reference is BOUND (nesne mevcut).'.
-ELSE.
-  WRITE: / 'Object reference is NOT BOUND.'.
+IF lo_demo IS BOUND.
+
+  WRITE: / 'Object reference is bound'.
+
 ENDIF.
 
+ULINE.
 
-*-----------------------------------
-* 5) Internal table boş/dolu kontrolü
-*-----------------------------------
-DATA lt_tab TYPE STANDARD TABLE OF i WITH EMPTY KEY.
+"=========================================================
+" 10. Internal Table IS INITIAL Check
+"=========================================================
 
-IF lt_tab IS INITIAL.
-  WRITE: / 'Internal table is empty (IS INITIAL).'.
-ELSE.
-  WRITE: / 'Internal table has entries, lines =', lines( lt_tab ).
+DATA lt_numbers TYPE STANDARD TABLE OF i WITH EMPTY KEY.
+
+IF lt_numbers IS INITIAL.
+
+  WRITE: / 'Internal table is empty'.
+
 ENDIF.
+
+ULINE.
+
+WRITE: / 'Program completed successfully'.
