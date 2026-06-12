@@ -1,4 +1,4 @@
-REPORT zz_14_internal_tables_basic.
+Report : ZZ_14_INTERNAL_TABLES_BASIC.
 
 *---------------------------------------------------------------------*
 * Report : ZZ_14_INTERNAL_TABLES_BASIC
