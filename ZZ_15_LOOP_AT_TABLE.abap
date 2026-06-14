@@ -1,74 +1,99 @@
 REPORT ZZ_15_LOOP_AT_TABLE.
 
-*----------------------------------------------------------------------
-* Program : ZZ_15_LOOP_AT_TABLE
-* Konu    : LOOP AT Kullanımı
-* Açıklama:
-*   Bu program ABAP'ta internal table üzerinde LOOP AT kullanarak
-*   verilerin nasıl dolaşıldığını göstermektedir.
-*
-* İçerik:
-*   - Internal table oluşturma
-*   - APPEND ile veri ekleme
-*   - LOOP AT kullanımı
-*   - Satır verilerini ekrana yazdırma
+*---------------------------------------------------------------------*
+* Report : ZZ_15_LOOP_AT_TABLE
+* Purpose: Demonstrates LOOP AT usage with internal tables
 *---------------------------------------------------------------------*
 
-*----------------------------------------------------------------------*
-* Structure Tanımı
-*----------------------------------------------------------------------*
-TYPES: BEGIN OF ty_student,
-         student_no TYPE i,
-         name       TYPE string,
-         department TYPE string,
-         grade      TYPE p DECIMALS 2,
-       END OF ty_student.
+*---------------------------------------------------------------------*
+* Topics Covered
+*---------------------------------------------------------------------*
+* 1. Define an Internal Table
+* 2. Insert Data with APPEND
+* 3. LOOP AT INTO
+* 4. Display Current Row Number
+* 5. Calculate Total Grade
+* 6. Count Processed Records
+*---------------------------------------------------------------------*
 
-*----------------------------------------------------------------------*
-* Internal Table ve Work Area Tanımı
-*----------------------------------------------------------------------*
-DATA: gt_students TYPE TABLE OF ty_student,
-      gs_student  TYPE ty_student.
+"=========================================================
+" 1. Define a Structure
+"=========================================================
+TYPES:
+  BEGIN OF ty_student,
+    student_no TYPE i,
+    student_name TYPE string,
+    department TYPE string,
+    grade TYPE p LENGTH 5 DECIMALS 2,
+  END OF ty_student.
 
-*----------------------------------------------------------------------*
-* 1) Öğrenci Verisi
-*----------------------------------------------------------------------*
-gs_student-student_no = 1001.
-gs_student-name       = 'Hafize'.
-gs_student-department = 'Computer Engineering'.
-gs_student-grade      = '89.50'.
+"=========================================================
+" 2. Define Internal Table
+"=========================================================
+DATA:
+  lt_students TYPE STANDARD TABLE OF ty_student,
+  ls_student  TYPE ty_student.
 
-APPEND gs_student TO gt_students.
+"=========================================================
+" 3. Insert Data with APPEND
+"=========================================================
+APPEND VALUE ty_student(
+  student_no   = 1001
+  student_name = 'Hafize'
+  department   = 'Computer Engineering'
+  grade        = '89.50'
+) TO lt_students.
 
-*----------------------------------------------------------------------*
-* 2) Öğrenci Verisi
-*----------------------------------------------------------------------*
-gs_student-student_no = 1002.
-gs_student-name       = 'Ahmet'.
-gs_student-department = 'Industrial Engineering'.
-gs_student-grade      = '76.25'.
+APPEND VALUE ty_student(
+  student_no   = 1002
+  student_name = 'Ahmet'
+  department   = 'Industrial Engineering'
+  grade        = '76.25'
+) TO lt_students.
 
-APPEND gs_student TO gt_students.
+APPEND VALUE ty_student(
+  student_no   = 1003
+  student_name = 'Ayse'
+  department   = 'Software Engineering'
+  grade        = '91.75'
+) TO lt_students.
 
-*----------------------------------------------------------------------*
-* 3) Öğrenci Verisi
-*----------------------------------------------------------------------*
-gs_student-student_no = 1003.
-gs_student-name       = 'Ayse'.
-gs_student-department = 'Software Engineering'.
-gs_student-grade      = '91.75'.
+WRITE: / 'Total Students:',
+       lines( lt_students ).
 
-APPEND gs_student TO gt_students.
+ULINE.
 
-*----------------------------------------------------------------------*
-* LOOP AT ile Internal Table İçindeki Verileri Dolaşma
-*----------------------------------------------------------------------*
-LOOP AT gt_students INTO gs_student.
+"=========================================================
+" 4. LOOP AT INTO
+"=========================================================
+DATA:
+  lv_total_grade TYPE p LENGTH 8 DECIMALS 2,
+  lv_student_count TYPE i.
 
-  WRITE: / 'Student No :', gs_student-student_no,
-         / 'Name       :', gs_student-name,
-         / 'Department :', gs_student-department,
-         / 'Grade      :', gs_student-grade,
-         / '----------------------------------------'.
+LOOP AT lt_students INTO ls_student.
+
+  lv_student_count = lv_student_count + 1.
+  lv_total_grade   = lv_total_grade + ls_student-grade.
+
+  WRITE: / 'Row Number :', sy-tabix,
+         / 'Student No :', ls_student-student_no,
+         / 'Name       :', ls_student-student_name,
+         / 'Department :', ls_student-department,
+         / 'Grade      :', ls_student-grade.
+
+  ULINE.
 
 ENDLOOP.
+
+"=========================================================
+" 5. Summary Information
+"=========================================================
+WRITE: / 'Processed Records :', lv_student_count,
+       / 'Total Grades      :', lv_total_grade.
+
+ULINE.
+
+"=========================================================
+" End of Program
+"=========================================================
+WRITE: / 'Program completed successfully'.
