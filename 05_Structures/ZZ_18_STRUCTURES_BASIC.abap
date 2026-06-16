@@ -11,7 +11,7 @@
 *&   - Displaying Structure Fields
 *&---------------------------------------------------------------------*
 
-REPORT zz_18_structures_basic.
+REPORT ZZ_18_STRUCTURES_BASIC.
 
 *---------------------------------------------------------------------*
 * Structure Definition
@@ -33,8 +33,8 @@ DATA gs_employee TYPE ty_employee.
 * Assign Values to Structure Fields
 *---------------------------------------------------------------------*
 gs_employee-employee_id = 1001.
-gs_employee-first_name  = 'Hafize'.
-gs_employee-last_name   = 'Senyil'.
+gs_employee-first_name  = 'Emir'.
+gs_employee-last_name   = 'Koroglu'.
 gs_employee-department  = 'SAP ABAP'.
 gs_employee-salary      = '45000.00'.
 
