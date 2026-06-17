@@ -12,7 +12,7 @@
 *&   - User input processing
 *&---------------------------------------------------------------------*
 
-REPORT zz_27_parameters_basic.
+REPORT ZZ_27_PARAMETERS_BASIC.
 
 *---------------------------------------------------------------------*
 * Selection Screen
