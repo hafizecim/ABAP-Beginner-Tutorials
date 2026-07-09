@@ -1,51 +1,61 @@
 REPORT ZOSQL_39_CASE_IN_SELECT.
 
 *---------------------------------------------------------------------*
-* Report : ZOSQL_39_CASE_IN_SELECT
-* Purpose: Demonstrates CASE expression in ABAP Open SQL
+* Report  : ZOSQL_39_CASE_IN_SELECT
+* Purpose : Demonstrates CASE Expression in Modern ABAP Open SQL
 *---------------------------------------------------------------------*
 *
-* Topics Covered
-* 1. CASE Expression
-* 2. Calculated Columns
-* 3. Column Aliases (AS)
-* 4. Inline Internal Table
-* 5. ORDER BY
-* 6. Modern Open SQL
-* 7. Best Practices
+* Description
+*---------------------------------------------------------------------*
+* This program demonstrates how to use CASE expressions inside
+* Open SQL SELECT statements to derive business information directly
+* from the database.
 *
+* Topics Covered
+*---------------------------------------------------------------------*
+* 1. CASE Expression
+* 2. Multiple WHEN Conditions
+* 3. ELSE Condition
+* 4. Calculated Columns
+* 5. Column Alias (AS)
+* 6. Business Logic in SQL
+* 7. Modern Open SQL
+* 8. Inline Declaration
+* 9. ORDER BY
+* 10. Best Practices
 *---------------------------------------------------------------------*
 
 TABLES: sflight.
 
 *---------------------------------------------------------------------*
-* 1. Selection Parameter
+* Selection Screen
 *---------------------------------------------------------------------*
 PARAMETERS:
   p_carrid TYPE sflight-carrid DEFAULT 'LH'.
 
 *---------------------------------------------------------------------*
-* 2. SELECT with CASE Expression
+* Read Flight Data Using CASE Expression
 *---------------------------------------------------------------------*
 SELECT
        carrid,
        connid,
+       fldate,
        seatsmax,
        seatsocc,
 
        CASE
 
          WHEN seatsocc = 0
-           THEN 'Empty Flight'
+           THEN 'EMPTY'
 
-         WHEN seatsocc < seatsmax / 2
-           THEN 'Available'
+         WHEN seatsocc < ( seatsmax / 2 )
+           THEN 'AVAILABLE'
 
          WHEN seatsocc < seatsmax
-           THEN 'Almost Full'
+           THEN 'ALMOST FULL'
 
          ELSE
-           'Full Flight'
+           'FULL'
 
        END AS flight_status
 
@@ -58,34 +68,43 @@ SELECT
  ORDER BY connid.
 
 *---------------------------------------------------------------------*
-* 3. Display Results
+* Validate Result
 *---------------------------------------------------------------------*
-IF lt_flights IS INITIAL.
+IF sy-subrc <> 0
+   OR lt_flights IS INITIAL.
 
-  WRITE: / 'No flight data found.'.
+  WRITE: / 'No flight records found.'.
   RETURN.
 
 ENDIF.
 
-WRITE: / 'Flight Status Report'.
+*---------------------------------------------------------------------*
+* Display Report
+*---------------------------------------------------------------------*
+WRITE: / '================ Flight Status Report ================'.
 ULINE.
 
 LOOP AT lt_flights INTO DATA(ls_flight).
 
-  WRITE: /
-    'Carrier :', ls_flight-carrid,
-    'Connection :', ls_flight-connid.
-
-  WRITE: /
-    'Capacity :', ls_flight-seatsmax,
-    'Occupied :', ls_flight-seatsocc.
-
-  WRITE: /
-    'Status :', ls_flight-flight_status.
+  WRITE: / 'Carrier        :', ls_flight-carrid.
+  WRITE: / 'Connection     :', ls_flight-connid.
+  WRITE: / 'Flight Date    :', ls_flight-fldate.
+  WRITE: / 'Maximum Seats  :', ls_flight-seatsmax.
+  WRITE: / 'Occupied Seats :', ls_flight-seatsocc.
+  WRITE: / 'Flight Status  :', ls_flight-flight_status.
 
   ULINE.
 
 ENDLOOP.
+
+*---------------------------------------------------------------------*
+* Summary
+*---------------------------------------------------------------------*
+WRITE: / 'Total Flights :', lines( lt_flights ).
+
+ULINE.
+
+WRITE: / 'CASE expression evaluated directly in the database.'.
 
 *---------------------------------------------------------------------*
 * End of Program
