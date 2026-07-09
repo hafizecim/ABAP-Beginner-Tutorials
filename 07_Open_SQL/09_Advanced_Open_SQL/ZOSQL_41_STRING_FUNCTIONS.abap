@@ -627,3 +627,131 @@ WRITE:
 / 'Finished Successfully'.
 
 ULINE.
+
+*---------------------------------------------------------------------*
+* Final Statistics
+*---------------------------------------------------------------------*
+
+DATA:
+  lv_max_length TYPE i,
+  lv_min_length TYPE i VALUE 999,
+  lv_average    TYPE p LENGTH 8 DECIMALS 2,
+  lv_sum        TYPE i.
+
+LOOP AT gt_result INTO gs_result.
+
+  lv_sum = lv_sum + gs_result-text_length.
+
+  IF gs_result-text_length > lv_max_length.
+    lv_max_length = gs_result-text_length.
+  ENDIF.
+
+  IF gs_result-text_length < lv_min_length.
+    lv_min_length = gs_result-text_length.
+  ENDIF.
+
+ENDLOOP.
+
+IF gv_total_records > 0.
+
+  lv_average = lv_sum / gv_total_records.
+
+ENDIF.
+
+ULINE.
+
+WRITE: /
+'================ FINAL REPORT ================'.
+
+WRITE: /
+'Total Airlines        :', gv_total_records.
+
+WRITE: /
+'Longest Name Length   :', lv_max_length.
+
+WRITE: /
+'Shortest Name Length  :', lv_min_length.
+
+WRITE: /
+'Average Name Length   :', lv_average.
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* Best Practice Examples
+*---------------------------------------------------------------------*
+
+WRITE: /
+'Best Practices'.
+
+WRITE: /
+'- Use Open SQL string functions instead of ABAP LOOP processing.'.
+
+WRITE: /
+'- Filter data in the database whenever possible.'.
+
+WRITE: /
+'- Use CONCAT_WITH_SPACE instead of manual concatenation.'.
+
+WRITE: /
+'- Prefer UPPER/LOWER in SQL for case-insensitive searches.'.
+
+WRITE: /
+'- Keep SELECT lists explicit (avoid SELECT *).'.
+
+WRITE: /
+'- Use aliases for calculated columns.'.
+
+WRITE: /
+'- Use CASE expressions instead of post-processing in ABAP.'.
+
+WRITE: /
+'- Execute calculations on the database layer.'.
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* Performance Notes
+*---------------------------------------------------------------------*
+
+WRITE: /
+'Performance Notes'.
+
+WRITE: /
+'- Database string functions reduce network traffic.'.
+
+WRITE: /
+'- Smaller result sets improve response time.'.
+
+WRITE: /
+'- Avoid unnecessary LOOP/READ statements.'.
+
+WRITE: /
+'- Use WHERE conditions to filter early.'.
+
+WRITE: /
+'- Keep SQL readable and maintainable.'.
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* End of Program
+*---------------------------------------------------------------------*
+
+WRITE: /
+'============================================='.
+
+WRITE: /
+'Modern ABAP Open SQL String Functions Demo'.
+
+WRITE: /
+'Status : SUCCESS'.
+
+WRITE: /
+'Database : SCARR'.
+
+WRITE: /
+'Program completed successfully.'.
+
+WRITE: /
+'============================================='.
