@@ -1,4 +1,4 @@
-REPORT ZOSQL_41_STRING_FUNCTIONS.
+⁷REPORT ZOSQL_41_STRING_FUNCTIONS.
 
 *---------------------------------------------------------------------*
 * Program : ZOSQL_41_STRING_FUNCTIONS
@@ -278,3 +278,156 @@ IF gt_result IS INITIAL.
   RETURN.
 
 ENDIF.
+
+*---------------------------------------------------------------------*
+* Additional Variables
+*---------------------------------------------------------------------*
+DATA:
+  gv_total_records TYPE i,
+  gv_long_names    TYPE i,
+  gv_short_names   TYPE i.
+
+*---------------------------------------------------------------------*
+* Process Result
+*---------------------------------------------------------------------*
+LOOP AT gt_result INTO gs_result.
+
+* Count long/short airline names
+  CASE gs_result-name_category.
+
+    WHEN 'LONG' OR 'VERY LONG'.
+      gv_long_names += 1.
+
+    WHEN OTHERS.
+      gv_short_names += 1.
+
+  ENDCASE.
+
+* Example business rule
+  IF gs_result-position_air > 0.
+    gs_result-contains_air = 'FOUND'.
+  ELSE.
+    gs_result-contains_air = 'NOT FOUND'.
+  ENDIF.
+
+  MODIFY gt_result FROM gs_result.
+
+ENDLOOP.
+
+gv_total_records = lines( gt_result ).
+
+*---------------------------------------------------------------------*
+* Display Statistics
+*---------------------------------------------------------------------*
+WRITE: / '============================================='.
+WRITE: / 'Open SQL String Functions Statistics'.
+WRITE: / '============================================='.
+
+WRITE: / 'Total Records      :', gv_total_records.
+WRITE: / 'Long Names         :', gv_long_names.
+WRITE: / 'Short Names        :', gv_short_names.
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* Display Using SALV
+*---------------------------------------------------------------------*
+DATA:
+  lo_alv      TYPE REF TO cl_salv_table,
+  lo_columns  TYPE REF TO cl_salv_columns_table,
+  lo_column   TYPE REF TO cl_salv_column.
+
+TRY.
+
+    cl_salv_table=>factory(
+
+      IMPORTING
+        r_salv_table = lo_alv
+
+      CHANGING
+        t_table      = gt_result ).
+
+*------------------------------------------------------------------*
+* Optimize Column Width
+*------------------------------------------------------------------*
+    lo_columns = lo_alv->get_columns( ).
+
+    lo_columns->set_optimize(
+      abap_true ).
+
+*------------------------------------------------------------------*
+* Column Texts
+*------------------------------------------------------------------*
+
+    lo_column ?= lo_columns->get_column( 'CARRID' ).
+    lo_column->set_short_text( 'ID' ).
+    lo_column->set_medium_text( 'Carrier ID' ).
+    lo_column->set_long_text( 'Carrier Identifier' ).
+
+    lo_column ?= lo_columns->get_column( 'CARRNAME' ).
+    lo_column->set_long_text( 'Carrier Name' ).
+
+    lo_column ?= lo_columns->get_column( 'CONCAT_TEXT' ).
+    lo_column->set_long_text( 'CONCAT()' ).
+
+    lo_column ?= lo_columns->get_column( 'CONCAT_SPACE' ).
+    lo_column->set_long_text( 'CONCAT_WITH_SPACE()' ).
+
+    lo_column ?= lo_columns->get_column( 'LOWER_NAME' ).
+    lo_column->set_long_text( 'LOWER()' ).
+
+    lo_column ?= lo_columns->get_column( 'UPPER_NAME' ).
+    lo_column->set_long_text( 'UPPER()' ).
+
+    lo_column ?= lo_columns->get_column( 'LEFT_PAD' ).
+    lo_column->set_long_text( 'LPAD()' ).
+
+    lo_column ?= lo_columns->get_column( 'RIGHT_PAD' ).
+    lo_column->set_long_text( 'RPAD()' ).
+
+    lo_column ?= lo_columns->get_column( 'TEXT_LENGTH' ).
+    lo_column->set_long_text( 'LENGTH()' ).
+
+    lo_column ?= lo_columns->get_column( 'LEFT_TEXT' ).
+    lo_column->set_long_text( 'LEFT()' ).
+
+    lo_column ?= lo_columns->get_column( 'RIGHT_TEXT' ).
+    lo_column->set_long_text( 'RIGHT()' ).
+
+    lo_column ?= lo_columns->get_column( 'SUBSTRING_TEXT' ).
+    lo_column->set_long_text( 'SUBSTRING()' ).
+
+    lo_column ?= lo_columns->get_column( 'POSITION_AIR' ).
+    lo_column->set_long_text( 'INSTR()' ).
+
+    lo_column ?= lo_columns->get_column( 'REPLACED_TEXT' ).
+    lo_column->set_long_text( 'REPLACE()' ).
+
+    lo_column ?= lo_columns->get_column( 'AIRLINE_CODE' ).
+    lo_column->set_long_text( 'Generated Airline Code' ).
+
+*------------------------------------------------------------------*
+* Functions
+*------------------------------------------------------------------*
+    lo_alv->get_functions( )->set_all(
+      abap_true ).
+
+*------------------------------------------------------------------*
+* Display Settings
+*------------------------------------------------------------------*
+    lo_alv->get_display_settings( )->set_striped_pattern(
+      abap_true ).
+
+    lo_alv->get_display_settings( )->set_list_header(
+      'Modern ABAP Open SQL String Functions Demo' ).
+
+*------------------------------------------------------------------*
+* Show ALV
+*------------------------------------------------------------------*
+    lo_alv->display( ).
+
+  CATCH cx_salv_msg INTO DATA(lx_salv).
+
+    MESSAGE lx_salv->get_text( ) TYPE 'I'.
+
+ENDTRY.
