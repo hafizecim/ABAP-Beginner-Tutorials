@@ -431,3 +431,199 @@ TRY.
     MESSAGE lx_salv->get_text( ) TYPE 'I'.
 
 ENDTRY.
+
+*---------------------------------------------------------------------*
+* Additional Examples
+*---------------------------------------------------------------------*
+
+DATA:
+  gt_airlines      TYPE TABLE OF scarr,
+  gt_air_names     TYPE TABLE OF scarr,
+  gt_long_names    TYPE TABLE OF scarr,
+  gt_codes         TYPE TABLE OF scarr.
+
+*---------------------------------------------------------------------*
+* Example 1
+* Airlines containing "Air"
+*---------------------------------------------------------------------*
+SELECT *
+
+  FROM scarr
+
+  WHERE instr( carrname, 'Air' ) > 0
+
+  INTO TABLE @gt_airlines.
+
+WRITE: /
+'----------------------------------------------'.
+
+WRITE:
+/ 'Example 1 : Airlines containing "Air"'.
+
+WRITE:
+/ 'Records :', lines( gt_airlines ).
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* Example 2
+* Carrier names starting with A
+*---------------------------------------------------------------------*
+SELECT *
+
+FROM scarr
+
+WHERE upper( carrname ) LIKE 'A%'
+
+INTO TABLE @gt_air_names.
+
+WRITE:
+/ 'Example 2 : Names starting with A'.
+
+WRITE:
+/ 'Records :', lines( gt_air_names ).
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* Example 3
+* Long airline names
+*---------------------------------------------------------------------*
+SELECT *
+
+FROM scarr
+
+WHERE length( carrname ) >= 10
+
+INTO TABLE @gt_long_names.
+
+WRITE:
+/ 'Example 3 : Long airline names'.
+
+WRITE:
+/ 'Records :', lines( gt_long_names ).
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* Example 4
+* Airline IDs
+*---------------------------------------------------------------------*
+SELECT *
+
+FROM scarr
+
+WHERE left( carrid,1 ) = 'L'
+
+INTO TABLE @gt_codes.
+
+WRITE:
+/ 'Example 4 : IDs beginning with L'.
+
+WRITE:
+/ 'Records :', lines( gt_codes ).
+
+ULINE.
+
+*---------------------------------------------------------------------*
+* Detailed Output
+*---------------------------------------------------------------------*
+
+WRITE:
+/ '==============================='.
+
+WRITE:
+/ 'Detailed Airline Information'.
+
+WRITE:
+/ '==============================='.
+
+LOOP AT gt_result INTO gs_result.
+
+  WRITE:
+/ 'Carrier ID        :', gs_result-carrid.
+
+  WRITE:
+/ 'Carrier Name      :', gs_result-carrname.
+
+  WRITE:
+/ 'Currency          :', gs_result-currcode.
+
+  WRITE:
+/ 'URL               :', gs_result-url.
+
+  WRITE:
+/ 'Upper             :', gs_result-upper_name.
+
+  WRITE:
+/ 'Lower             :', gs_result-lower_name.
+
+  WRITE:
+/ 'Length            :', gs_result-text_length.
+
+  WRITE:
+/ 'Left              :', gs_result-left_text.
+
+  WRITE:
+/ 'Right             :', gs_result-right_text.
+
+  WRITE:
+/ 'Substring         :', gs_result-substring_text.
+
+  WRITE:
+/ 'Replace           :', gs_result-replaced_text.
+
+  WRITE:
+/ 'Concat            :', gs_result-concat_text.
+
+  WRITE:
+/ 'Concat Space      :', gs_result-concat_space.
+
+  WRITE:
+/ 'Upper Concat      :', gs_result-upper_concat.
+
+  WRITE:
+/ 'Padded            :', gs_result-padded_concat.
+
+  WRITE:
+/ 'Mixed Text        :', gs_result-mixed_text.
+
+  WRITE:
+/ 'Airline Code      :', gs_result-airline_code.
+
+  WRITE:
+/ 'Contains AIR      :', gs_result-contains_air.
+
+  WRITE:
+/ 'Category          :', gs_result-name_category.
+
+  ULINE.
+
+ENDLOOP.
+
+*---------------------------------------------------------------------*
+* Summary
+*---------------------------------------------------------------------*
+
+WRITE:
+/ '========================================='.
+
+WRITE:
+/ 'Program Summary'.
+
+WRITE:
+/ '========================================='.
+
+WRITE:
+/ 'Total Airlines          :', gv_total_records.
+
+WRITE:
+/ 'Long Names              :', gv_long_names.
+
+WRITE:
+/ 'Short Names             :', gv_short_names.
+
+WRITE:
+/ 'Finished Successfully'.
+
+ULINE.
