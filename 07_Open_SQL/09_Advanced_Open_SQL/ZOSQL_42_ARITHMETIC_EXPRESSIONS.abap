@@ -195,3 +195,121 @@ ENDIF.
             ( ( seatsocc * 1.08 ) * 100.0 / seatsmax )
             AS DEC(5,2)
            )                                   AS estimated_occupancy
+*---------------------------------------------------------------------*
+* Display Results
+*---------------------------------------------------------------------*
+
+IF gt_flights IS INITIAL.
+
+  WRITE: / 'No flight data found.'.
+  RETURN.
+
+ENDIF.
+
+DATA:
+  lv_flight_count      TYPE i,
+  lv_total_capacity    TYPE i,
+  lv_total_occupied    TYPE i,
+  lv_total_available   TYPE i.
+
+lv_flight_count = lines( gt_flights ).
+
+ULINE.
+WRITE: / 'Flight Capacity Report'.
+ULINE.
+
+LOOP AT gt_flights INTO DATA(gs_flight).
+
+  WRITE: / 'Carrier                 :', gs_flight-carrid.
+  WRITE: / 'Connection              :', gs_flight-connid.
+  WRITE: / 'Flight Date             :', gs_flight-fldate.
+  WRITE: / 'Currency                :', gs_flight-currency.
+
+  SKIP.
+
+  WRITE: / 'Ticket Price            :', gs_flight-price.
+  WRITE: / 'Price With Tax          :', gs_flight-price_with_tax.
+  WRITE: / 'Discounted Price        :', gs_flight-discounted_price.
+  WRITE: / 'Increased Price         :', gs_flight-increased_price.
+
+  SKIP.
+
+  WRITE: / 'Maximum Seats           :', gs_flight-seatsmax.
+  WRITE: / 'Occupied Seats          :', gs_flight-seatsocc.
+  WRITE: / 'Available Seats         :', gs_flight-available_seats.
+  WRITE: / 'Occupancy (%)           :', gs_flight-occupancy_percent.
+
+  SKIP.
+
+  WRITE: / 'Extended Capacity       :', gs_flight-extended_capacity.
+  WRITE: / 'Reduced Capacity        :', gs_flight-reduced_capacity.
+  WRITE: / 'Double Capacity         :', gs_flight-double_capacity.
+  WRITE: / 'Triple Capacity         :', gs_flight-triple_capacity.
+  WRITE: / 'Half Capacity           :', gs_flight-half_capacity.
+  WRITE: / 'Quarter Capacity        :', gs_flight-quarter_capacity.
+
+  SKIP.
+
+  WRITE: / 'Double Available        :', gs_flight-double_available.
+  WRITE: / 'Triple Available        :', gs_flight-triple_available.
+  WRITE: / 'Estimated Occupied      :', gs_flight-estimated_occupied.
+  WRITE: / 'Estimated Free Seats    :', gs_flight-estimated_free.
+  WRITE: / 'Forecast Capacity       :', gs_flight-forecast_capacity.
+  WRITE: / 'Expected Occupied       :', gs_flight-expected_occupied.
+  WRITE: / 'Estimated Occupancy (%) :', gs_flight-estimated_occupancy.
+
+  ULINE.
+
+  lv_total_capacity  = lv_total_capacity  + gs_flight-seatsmax.
+  lv_total_occupied  = lv_total_occupied  + gs_flight-seatsocc.
+  lv_total_available = lv_total_available + gs_flight-available_seats.
+
+ENDLOOP.
+
+*---------------------------------------------------------------------*
+* Summary
+*---------------------------------------------------------------------*
+
+ULINE.
+WRITE: / 'Summary'.
+ULINE.
+
+WRITE: / 'Number of Flights  :', lv_flight_count.
+WRITE: / 'Total Capacity     :', lv_total_capacity.
+WRITE: / 'Total Occupied     :', lv_total_occupied.
+WRITE: / 'Total Available    :', lv_total_available.
+
+IF lv_total_capacity > 0.
+
+  WRITE:
+  / 'Overall Occupancy % :',
+    ( lv_total_occupied * 100 ) / lv_total_capacity.
+
+ENDIF.
+
+*---------------------------------------------------------------------*
+* Best Practices
+*---------------------------------------------------------------------*
+
+SKIP.
+ULINE.
+WRITE: / 'Best Practices'.
+ULINE.
+
+WRITE: / '- Perform arithmetic calculations in Open SQL whenever appropriate.'.
+WRITE: / '- Select only the columns required by the application.'.
+WRITE: / '- Use meaningful aliases for calculated columns.'.
+WRITE: / '- Use CAST for decimal precision when needed.'.
+WRITE: / '- Prevent division by zero in percentage calculations.'.
+WRITE: / '- Keep arithmetic expressions simple and readable.'.
+WRITE: / '- Filter records in the database using WHERE conditions.'.
+WRITE: / '- Avoid repeating the same calculation multiple times.'.
+
+*---------------------------------------------------------------------*
+* End of Program
+*---------------------------------------------------------------------*
+
+SKIP.
+ULINE.
+WRITE: / 'Program completed successfully.'.
+ULINE.
