@@ -198,3 +198,178 @@ WRITE:
 'Processed Rows :', gv_total_rows.
 
 SKIP.
+
+************************************************************************
+* Example 5
+* PACKAGE SIZE with WHERE Condition
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 5 : PACKAGE SIZE with WHERE'.
+ULINE.
+
+CLEAR:
+  gv_package_no,
+  gv_total_rows.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency
+  FROM sflight
+  WHERE carrid = 'LH'
+  INTO TABLE @gt_flight
+  PACKAGE SIZE 15.
+
+  gv_package_no = gv_package_no + 1.
+  gv_total_rows = gv_total_rows + lines( gt_flight ).
+
+  WRITE:
+  / 'Package :', gv_package_no,
+    'Rows :', lines( gt_flight ).
+
+  LOOP AT gt_flight INTO gs_flight.
+
+    WRITE:
+    / gs_flight-carrid,
+      gs_flight-connid,
+      gs_flight-fldate,
+      gs_flight-price.
+
+  ENDLOOP.
+
+  SKIP.
+
+ENDSELECT.
+
+WRITE:
+/ 'Total Rows Read :', gv_total_rows.
+
+SKIP.
+
+************************************************************************
+* Example 6
+* PACKAGE SIZE with ORDER BY
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 6 : PACKAGE SIZE with ORDER BY'.
+ULINE.
+
+CLEAR:
+  gv_package_no,
+  gv_total_rows.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency
+  FROM sflight
+  WHERE carrid = 'AA'
+  ORDER BY PRIMARY KEY
+  INTO TABLE @gt_flight
+  PACKAGE SIZE 5.
+
+  gv_package_no = gv_package_no + 1.
+  gv_total_rows = gv_total_rows + lines( gt_flight ).
+
+  WRITE:
+  / 'Package :', gv_package_no,
+    'Rows :', lines( gt_flight ).
+
+ENDSELECT.
+
+WRITE:
+/ 'Total Rows Read :', gv_total_rows.
+
+SKIP.
+
+************************************************************************
+* Example 7
+* Count Processed Packages
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 7 : Count Packages'.
+ULINE.
+
+CLEAR:
+  gv_package_no,
+  gv_total_rows.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency
+  FROM sflight
+  INTO TABLE @gt_flight
+  PACKAGE SIZE 25.
+
+  gv_package_no = gv_package_no + 1.
+  gv_total_rows = gv_total_rows + lines( gt_flight ).
+
+ENDSELECT.
+
+WRITE:
+/ 'Packages Processed :', gv_package_no,
+/ 'Total Records      :', gv_total_rows.
+
+SKIP.
+
+************************************************************************
+* Example 8
+* Memory-Efficient Package Processing
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 8 : Memory-Efficient Processing'.
+ULINE.
+
+CLEAR:
+  gv_package_no,
+  gv_total_rows.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency
+  FROM sflight
+  INTO TABLE @gt_flight
+  PACKAGE SIZE 20.
+
+  gv_package_no = gv_package_no + 1.
+
+  LOOP AT gt_flight INTO gs_flight.
+
+    gv_total_rows = gv_total_rows + 1.
+
+*   Place business logic here.
+*   Example:
+*   - Validation
+*   - Calculation
+*   - Data transformation
+*   - File generation
+*   - API call
+*   - BAPI processing
+
+  ENDLOOP.
+
+* Release package memory before fetching the next package.
+
+  CLEAR gt_flight.
+
+ENDSELECT.
+
+WRITE:
+/ 'Packages Processed :', gv_package_no,
+/ 'Total Records      :', gv_total_rows.
+
+SKIP.
