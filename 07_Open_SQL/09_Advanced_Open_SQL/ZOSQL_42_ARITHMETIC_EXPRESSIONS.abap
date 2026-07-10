@@ -107,3 +107,91 @@ IF gt_flights IS INITIAL.
   RETURN.
 
 ENDIF.
+*---------------------------------------------------------------------*
+* Price Calculations
+*---------------------------------------------------------------------*
+
+* Ticket price including 18% tax
+       CAST(
+            ( price * 1.18 )
+            AS DEC(15,2)
+           )                                   AS price_with_tax,
+
+* Ticket price after 10% discount
+       CAST(
+            ( price * 0.90 )
+            AS DEC(15,2)
+           )                                   AS discounted_price,
+
+* Price increased by 25%
+       CAST(
+            ( price * 1.25 )
+            AS DEC(15,2)
+           )                                   AS increased_price,
+
+*---------------------------------------------------------------------*
+* Capacity Planning
+*---------------------------------------------------------------------*
+
+* Planned additional seats
+       ( seatsmax + 50 )                       AS planned_capacity,
+
+* Estimated occupied seats
+       ( seatsocc + 15 )                       AS estimated_occupied,
+
+* Remaining seats after reservation
+       ( seatsmax - seatsocc - 10 )            AS remaining_after_booking,
+
+*---------------------------------------------------------------------*
+* Advanced Arithmetic Expressions
+*---------------------------------------------------------------------*
+
+* Triple capacity
+       ( seatsmax * 3 )                        AS triple_capacity,
+
+* Quarter capacity
+       ( seatsmax / 4 )                        AS quarter_capacity,
+
+* Triple available seats
+       ( ( seatsmax - seatsocc ) * 3 )         AS triple_available,
+
+* Estimated free seats after reservations
+       ( seatsmax - ( seatsocc + 20 ) )        AS estimated_free,
+
+*---------------------------------------------------------------------*
+* Capacity Ratios
+*---------------------------------------------------------------------*
+
+* Available seat percentage
+       CAST(
+            ( ( seatsmax - seatsocc ) * 100.0 / seatsmax )
+            AS DEC(5,2)
+           )                                   AS available_percent,
+
+* Remaining capacity after maintenance
+       CAST(
+            ( ( seatsmax - 25 ) * 100.0 / seatsmax )
+            AS DEC(5,2)
+           )                                   AS maintenance_percent,
+
+*---------------------------------------------------------------------*
+* Complex Arithmetic Expressions
+*---------------------------------------------------------------------*
+
+* Forecast capacity after expansion
+       CAST(
+            ( ( seatsmax + 100 ) * 1.05 )
+            AS DEC(10,2)
+           )                                   AS forecast_capacity,
+
+* Expected occupied seats
+       CAST(
+            ( seatsocc * 1.08 )
+            AS DEC(10,2)
+           )                                   AS expected_occupied,
+
+* Estimated occupancy percentage
+       CAST(
+            ( ( seatsocc * 1.08 ) * 100.0 / seatsmax )
+            AS DEC(5,2)
+           )                                   AS estimated_occupancy
