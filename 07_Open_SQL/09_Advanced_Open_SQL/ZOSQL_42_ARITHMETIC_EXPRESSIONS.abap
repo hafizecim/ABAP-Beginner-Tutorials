@@ -6,85 +6,104 @@ REPORT ZOSQL_42_ARITHMETIC_EXPRESSIONS.
 *---------------------------------------------------------------------*
 *
 * Topics Covered
-* 1. Arithmetic Expressions
-* 2. Addition (+)
-* 3. Subtraction (-)
-* 4. Multiplication (*)
-* 5. Division (/)
+*
+* 1. Addition (+)
+* 2. Subtraction (-)
+* 3. Multiplication (*)
+* 4. Division (/)
+* 5. Parentheses
 * 6. Calculated Columns
 * 7. Column Aliases (AS)
-* 8. Inline Internal Table
-* 9. Modern Open SQL
-* 10. Best Practices
+* 8. CAST
+* 9. Nested Expressions
+*10. Best Practices
 *
 *---------------------------------------------------------------------*
 
-TABLES: sflight.
-
 *---------------------------------------------------------------------*
-* 1. Selection Parameters
+* Selection Screen
 *---------------------------------------------------------------------*
 PARAMETERS:
   p_carrid TYPE sflight-carrid DEFAULT 'LH'.
 
 *---------------------------------------------------------------------*
-* 2. Read Flight Data with Arithmetic Expressions
+* Read Flight Data
 *---------------------------------------------------------------------*
 SELECT
        carrid,
        connid,
+       fldate,
+       currency,
+       price,
        seatsmax,
        seatsocc,
 
-       ( seatsmax - seatsocc )              AS available_seats,
+*---------------------------------------------------------------------*
+* Addition
+*---------------------------------------------------------------------*
 
-       ( seatsocc * 100 / seatsmax )        AS occupancy_percent,
+       ( seatsmax + 20 )                       AS extended_capacity,
 
-       ( seatsmax + 20 )                    AS extended_capacity,
+*---------------------------------------------------------------------*
+* Subtraction
+*---------------------------------------------------------------------*
 
-       ( seatsmax * 2 )                     AS double_capacity,
+       ( seatsmax - seatsocc )                 AS available_seats,
 
-       ( seatsocc / 2 )                     AS half_occupied
+       ( seatsmax - 10 )                       AS reduced_capacity,
+
+*---------------------------------------------------------------------*
+* Multiplication
+*---------------------------------------------------------------------*
+
+       ( seatsmax * 2 )                        AS double_capacity,
+
+       ( seatsocc * 2 )                        AS double_occupied,
+
+*---------------------------------------------------------------------*
+* Division
+*---------------------------------------------------------------------*
+
+       ( seatsmax / 2 )                        AS half_capacity,
+
+       ( seatsocc / 2 )                        AS half_occupied,
+
+*---------------------------------------------------------------------*
+* Nested Arithmetic Expressions
+*---------------------------------------------------------------------*
+
+       ( ( seatsmax - seatsocc ) * 2 )         AS double_available,
+
+       ( ( seatsmax + 50 ) / 2 )               AS average_capacity,
+
+*---------------------------------------------------------------------*
+* Percentage Calculation
+*---------------------------------------------------------------------*
+
+       CAST(
+            ( seatsocc * 100.0 / seatsmax )
+            AS DEC(5,2)
+           )                                   AS occupancy_percent
 
   FROM sflight
-
-  INTO TABLE @DATA(lt_flights)
 
  WHERE carrid = @p_carrid
    AND seatsmax > 0
 
- ORDER BY connid.
+ ORDER BY
+       carrid,
+       connid,
+       fldate
+
+ INTO TABLE @DATA(gt_flights).
 
 *---------------------------------------------------------------------*
-* 3. Display Results
+* Check Result
 *---------------------------------------------------------------------*
-IF lt_flights IS INITIAL.
+
+IF gt_flights IS INITIAL.
 
   WRITE: / 'No flight data found.'.
   RETURN.
 
 ENDIF.
-
-WRITE: / 'Flight Capacity Report'.
-ULINE.
-
-LOOP AT lt_flights INTO DATA(ls_flight).
-
-  WRITE: / 'Carrier            :', ls_flight-carrid.
-  WRITE: / 'Connection         :', ls_flight-connid.
-  WRITE: / 'Maximum Seats      :', ls_flight-seatsmax.
-  WRITE: / 'Occupied Seats     :', ls_flight-seatsocc.
-  WRITE: / 'Available Seats    :', ls_flight-available_seats.
-  WRITE: / 'Occupancy (%)      :', ls_flight-occupancy_percent.
-  WRITE: / 'Extended Capacity  :', ls_flight-extended_capacity.
-  WRITE: / 'Double Capacity    :', ls_flight-double_capacity.
-  WRITE: / 'Half Occupied      :', ls_flight-half_occupied.
-
-  ULINE.
-
-ENDLOOP.
-
-*---------------------------------------------------------------------*
-* End of Program
-*---------------------------------------------------------------------*
-WRITE: / 'Program completed successfully.'.
