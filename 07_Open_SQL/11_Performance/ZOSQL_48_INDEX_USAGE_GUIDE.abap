@@ -368,3 +368,140 @@ LOOP AT gt_connection INTO gs_connection.
 ENDLOOP.
 
 SKIP.
+
+************************************************************************
+* Example 9
+* Non-Index-Friendly Search
+************************************************************************
+*
+* Searching with non-indexed columns may require a full table scan.
+* This example is for demonstration purposes only.
+*
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 9 : Non-Index-Friendly Search'.
+ULINE.
+
+CLEAR gt_flight.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency,
+       seatsocc
+  FROM sflight
+  WHERE price > 500
+  INTO TABLE @gt_flight.
+
+WRITE: / 'Records Found :', lines( gt_flight ).
+
+LOOP AT gt_flight INTO gs_flight.
+
+  WRITE:
+  / gs_flight-carrid,
+    gs_flight-connid,
+    gs_flight-fldate,
+    gs_flight-price,
+    gs_flight-currency.
+
+ENDLOOP.
+
+SKIP.
+
+************************************************************************
+* Example 10
+* Index-Friendly Search
+************************************************************************
+*
+* Filtering with leading indexed fields generally provides
+* better database performance.
+*
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 10 : Index-Friendly Search'.
+ULINE.
+
+CLEAR gt_flight.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency,
+       seatsocc
+  FROM sflight
+  WHERE carrid = 'LH'
+    AND connid = '0400'
+  INTO TABLE @gt_flight.
+
+WRITE: / 'Records Found :', lines( gt_flight ).
+
+LOOP AT gt_flight INTO gs_flight.
+
+  WRITE:
+  / gs_flight-carrid,
+    gs_flight-connid,
+    gs_flight-fldate,
+    gs_flight-price.
+
+ENDLOOP.
+
+SKIP.
+
+************************************************************************
+* Example 11
+* Performance Recommendations
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 11 : Performance Recommendations'.
+ULINE.
+
+WRITE: /
+'1. Use indexed fields in WHERE conditions whenever possible.',
+/ '2. Prefer equality conditions over broad range searches.',
+/ '3. Retrieve only required columns instead of SELECT *.',
+/ '4. Use full primary keys with SELECT SINGLE.',
+/ '5. Filter data in the database rather than in ABAP.',
+/ '6. Avoid unnecessary database accesses.',
+/ '7. Keep WHERE conditions as specific as possible.',
+/ '8. Use ORDER BY PRIMARY KEY when appropriate.',
+/ '9. Minimize the amount of transferred data.',
+/ '10. Analyze expensive statements with SQL Trace (ST05).'.
+
+SKIP.
+
+************************************************************************
+* Example 12
+* Best Practices Summary
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 12 : Best Practices Summary'.
+ULINE.
+
+WRITE: /
+'Good Practice',
+/ '-------------',
+/ '- Search using primary keys whenever available.',
+/ '- Use leading fields of database indexes.',
+/ '- Read only the fields required by the program.',
+/ '- Restrict the number of selected records.',
+/ '- Let the database perform filtering operations.',
+/ '- Keep SQL statements simple and efficient.',
+/ '- Design SQL statements with performance in mind.'.
+
+SKIP.
+
+************************************************************************
+* End of Report
+************************************************************************
+
+ULINE.
+WRITE: / 'End of ZOSQL_48_INDEX_USAGE_GUIDE'.
+ULINE.
