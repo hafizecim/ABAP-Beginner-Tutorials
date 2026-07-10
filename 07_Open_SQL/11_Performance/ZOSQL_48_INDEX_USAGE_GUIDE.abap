@@ -207,3 +207,164 @@ LOOP AT gt_flight INTO gs_flight.
 ENDLOOP.
 
 SKIP.
+
+************************************************************************
+* Example 5
+* ORDER BY PRIMARY KEY
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 5 : ORDER BY PRIMARY KEY'.
+ULINE.
+
+CLEAR gt_scarr.
+
+SELECT
+       carrid,
+       carrname,
+       currcode,
+       url
+  FROM scarr
+  ORDER BY PRIMARY KEY
+  INTO TABLE @gt_scarr.
+
+WRITE: / 'Number of Carriers :', lines( gt_scarr ).
+
+LOOP AT gt_scarr INTO gs_scarr.
+
+  WRITE:
+  / gs_scarr-carrid,
+    gs_scarr-carrname,
+    gs_scarr-currcode.
+
+ENDLOOP.
+
+SKIP.
+
+************************************************************************
+* Example 6
+* SELECT SINGLE Using Full Primary Key
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 6 : SELECT SINGLE'.
+ULINE.
+
+CLEAR gs_flight.
+
+SELECT SINGLE
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency,
+       seatsocc
+  FROM sflight
+  WHERE carrid = 'AA'
+    AND connid = '0017'
+    AND fldate = '20250101'
+  INTO @gs_flight.
+
+IF sy-subrc = 0.
+
+  WRITE:
+  / 'Carrier   :', gs_flight-carrid,
+  / 'Connection:', gs_flight-connid,
+  / 'Date      :', gs_flight-fldate,
+  / 'Price     :', gs_flight-price,
+  / 'Currency  :', gs_flight-currency.
+
+ELSE.
+
+  WRITE / 'No matching record found.'.
+
+ENDIF.
+
+SKIP.
+
+************************************************************************
+* Example 7
+* UP TO 1 ROWS
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 7 : UP TO 1 ROWS'.
+ULINE.
+
+CLEAR gt_flight.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency,
+       seatsocc
+  FROM sflight
+  WHERE carrid = 'AA'
+  UP TO 1 ROWS
+  INTO TABLE @gt_flight.
+
+IF gt_flight IS NOT INITIAL.
+
+  LOOP AT gt_flight INTO gs_flight.
+
+    WRITE:
+    / gs_flight-carrid,
+      gs_flight-connid,
+      gs_flight-fldate,
+      gs_flight-price.
+
+  ENDLOOP.
+
+ELSE.
+
+  WRITE / 'No data found.'.
+
+ENDIF.
+
+SKIP.
+
+************************************************************************
+* Example 8
+* Select Only Required Columns
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 8 : Select Only Required Columns'.
+ULINE.
+
+TYPES:
+  BEGIN OF ty_connection,
+    carrid TYPE sflight-carrid,
+    connid TYPE sflight-connid,
+    fldate TYPE sflight-fldate,
+  END OF ty_connection.
+
+DATA:
+  gs_connection TYPE ty_connection,
+  gt_connection TYPE STANDARD TABLE OF ty_connection WITH EMPTY KEY.
+
+CLEAR gt_connection.
+
+SELECT
+       carrid,
+       connid,
+       fldate
+  FROM sflight
+  WHERE carrid = 'LH'
+  INTO TABLE @gt_connection.
+
+WRITE:
+ / 'Selected Records :', lines( gt_connection ).
+
+LOOP AT gt_connection INTO gs_connection.
+
+  WRITE:
+  / gs_connection-carrid,
+    gs_connection-connid,
+    gs_connection-fldate.
+
+ENDLOOP.
+
+SKIP.
