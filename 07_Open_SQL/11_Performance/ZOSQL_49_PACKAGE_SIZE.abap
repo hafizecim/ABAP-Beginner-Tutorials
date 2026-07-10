@@ -373,3 +373,129 @@ WRITE:
 / 'Total Records      :', gv_total_rows.
 
 SKIP.
+
+************************************************************************
+* Example 9
+* Stop Reading After a Specific Number of Packages
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 9 : Stop After Three Packages'.
+ULINE.
+
+CLEAR:
+  gv_package_no,
+  gv_total_rows.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency
+  FROM sflight
+  INTO TABLE @gt_flight
+  PACKAGE SIZE 10.
+
+  gv_package_no = gv_package_no + 1.
+  gv_total_rows = gv_total_rows + lines( gt_flight ).
+
+  WRITE:
+  / 'Package :', gv_package_no,
+    'Rows :', lines( gt_flight ).
+
+  IF gv_package_no = 3.
+
+    WRITE: / 'Three packages processed. Reading stopped.'.
+    EXIT.
+
+  ENDIF.
+
+ENDSELECT.
+
+WRITE:
+/
+'Total Packages :', gv_package_no,
+/
+'Total Records  :', gv_total_rows.
+
+SKIP.
+
+************************************************************************
+* Example 10
+* Display Number of Database Records Read
+************************************************************************
+
+ULINE.
+WRITE: / 'Example 10 : Using SY-DBCNT'.
+ULINE.
+
+CLEAR:
+  gv_package_no.
+
+SELECT
+       carrid,
+       connid,
+       fldate,
+       price,
+       currency
+  FROM sflight
+  INTO TABLE @gt_flight
+  PACKAGE SIZE 25.
+
+  gv_package_no = gv_package_no + 1.
+
+  WRITE:
+  / 'Package :', gv_package_no,
+    'Rows :', lines( gt_flight ),
+    'SY-DBCNT :', sy-dbcnt.
+
+ENDSELECT.
+
+SKIP.
+
+************************************************************************
+* PACKAGE SIZE Best Practices
+************************************************************************
+
+ULINE.
+WRITE: / 'Best Practices'.
+ULINE.
+
+WRITE: /
+'- Use PACKAGE SIZE for large database tables.',
+/ '- Process each package immediately.',
+/ '- Avoid loading millions of rows into memory.',
+/ '- Read only the required columns.',
+/ '- Filter records using WHERE conditions.',
+/ '- Use ORDER BY only when required.',
+/ '- Release internal tables after processing.',
+/ '- Keep package sizes reasonable.',
+/ '- Test different package sizes for performance.',
+/ '- Measure runtime using SAT or SQL Trace (ST05).'.
+
+SKIP.
+
+************************************************************************
+* Summary
+************************************************************************
+
+ULINE.
+WRITE: / 'Summary'.
+ULINE.
+
+WRITE: /
+'PACKAGE SIZE divides the result set into smaller packages.',
+/ 'Each package is processed before the next one is fetched.',
+/ 'This reduces memory consumption and improves scalability.',
+/ 'It is especially useful when processing very large tables.'.
+
+SKIP.
+
+************************************************************************
+* End of Report
+************************************************************************
+
+ULINE.
+WRITE: / 'End of Report ZOSQL_49_PACKAGE_SIZE'.
+ULINE.
