@@ -141,3 +141,43 @@ FORM get_material_data.
     INTO TABLE @gt_material.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '========================================================================================================================',
+    / 'Material    Description                     Type   Group    Plant  Unit     Price        P.Unit   Total Value   Category',
+    / '========================================================================================================================'.
+
+  FORMAT RESET.
+
+  LOOP AT gt_material INTO DATA(gs_material).
+
+    WRITE:
+      / gs_material-material_number UNDER 'Material',
+        gs_material-material_text   UNDER 'Description',
+        gs_material-material_type   UNDER 'Type',
+        gs_material-material_group  UNDER 'Group',
+        gs_material-plant           UNDER 'Plant',
+        gs_material-base_unit       UNDER 'Unit',
+        gs_material-standard_price  UNDER 'Price',
+        gs_material-price_unit      UNDER 'P.Unit',
+        gs_material-total_value     UNDER 'Total Value',
+        gs_material-category        UNDER 'Category'.
+
+    IF gs_material-status = 'DELETED'.
+      WRITE: ' (Deleted)'.
+    ENDIF.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Number of Materials:', lines( gt_material ).
+
+ENDFORM.
