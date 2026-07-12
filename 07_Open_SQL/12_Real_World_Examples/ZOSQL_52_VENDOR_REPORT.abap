@@ -73,4 +73,62 @@ DATA:
 
 START-OF-SELECTION.
 
- 
+ *---------------------------------------------------------------------*
+* Form Get Vendor Data
+*---------------------------------------------------------------------*
+FORM get_vendor_data.
+
+  SELECT
+         lfa1~lifnr                                                AS vendor_number,
+
+         CONCAT_WITH_SPACE(
+             lfa1~name1,
+             lfa1~name2,
+             1 )                                                   AS vendor_name,
+
+         COALESCE(
+             adrc~city1,
+             'Unknown City' )                                      AS city,
+
+         lfa1~land1                                                AS country,
+         t005t~landx                                               AS country_name,
+
+         lfb1~bukrs                                                AS company_code,
+         lfm1~ekorg                                                AS purchasing_org,
+
+         lfb1~waers                                                AS currency,
+         lfa1~ktokk                                                AS account_group,
+
+         CASE
+           WHEN lfa1~loevm = @space THEN 'ACTIVE'
+           ELSE 'BLOCKED'
+         END                                                       AS status
+
+    FROM lfa1
+
+      INNER JOIN lfb1
+        ON lfb1~lifnr = lfa1~lifnr
+
+      INNER JOIN lfm1
+        ON lfm1~lifnr = lfa1~lifnr
+
+      LEFT OUTER JOIN adrc
+        ON adrc~addrnumber = lfa1~adrnr
+
+      LEFT OUTER JOIN t005t
+        ON t005t~land1 = lfa1~land1
+       AND t005t~spras = @p_langu
+
+    WHERE lfa1~lifnr IN @s_lifnr
+      AND lfa1~land1 IN @s_land1
+      AND lfb1~bukrs IN @s_bukrs
+      AND lfm1~ekorg IN @s_ekorg
+
+    ORDER BY
+      lfa1~lifnr,
+      lfb1~bukrs,
+      lfm1~ekorg
+
+    INTO TABLE @gt_vendor.
+
+ENDFORM.
