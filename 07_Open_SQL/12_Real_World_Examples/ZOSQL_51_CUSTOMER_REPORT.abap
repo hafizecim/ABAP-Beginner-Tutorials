@@ -84,3 +84,62 @@ START-OF-SELECTION.
   ENDIF.
 
   PERFORM display_report.
+*---------------------------------------------------------------------*
+* Form Get Customer Data
+*---------------------------------------------------------------------*
+FORM get_customer_data.
+
+  SELECT
+         kna1~kunnr                                               AS customer_number,
+
+         CONCAT_WITH_SPACE(
+             kna1~name1,
+             kna1~name2,
+             1 )                                                  AS customer_name,
+
+         COALESCE(
+             adrc~city1,
+             'Unknown City' )                                     AS city,
+
+         kna1~land1                                               AS country,
+         t005t~landx                                              AS country_name,
+
+         knvv~vkorg                                               AS sales_org,
+         knb1~bukrs                                               AS company_code,
+
+         knb1~waers                                               AS currency,
+         kna1~ktokd                                               AS account_group,
+
+         CASE
+           WHEN kna1~loevm = @space THEN 'ACTIVE'
+           ELSE 'BLOCKED'
+         END                                                      AS status
+
+    FROM kna1
+
+      INNER JOIN knb1
+        ON knb1~kunnr = kna1~kunnr
+
+      INNER JOIN knvv
+        ON knvv~kunnr = kna1~kunnr
+
+      LEFT OUTER JOIN adrc
+        ON adrc~addrnumber = kna1~adrnr
+
+      LEFT OUTER JOIN t005t
+        ON t005t~land1 = kna1~land1
+       AND t005t~spras = @p_langu
+
+    WHERE kna1~kunnr IN @s_kunnr
+      AND kna1~land1 IN @s_land1
+      AND knvv~vkorg IN @s_vkorg
+      AND knb1~bukrs IN @s_bukrs
+
+    ORDER BY
+      kna1~kunnr,
+      knvv~vkorg,
+      knb1~bukrs
+
+    INTO TABLE @gt_customer.
+
+ENDFORM.
