@@ -132,3 +132,38 @@ FORM get_vendor_data.
     INTO TABLE @gt_vendor.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '==============================================================================================================================',
+    / 'Vendor     Vendor Name                   City              Country        Company  Purch.Org Currency Account Grp Status',
+    / '=============================================================================================================================='.
+
+  FORMAT RESET.
+
+  LOOP AT gt_vendor INTO DATA(gs_vendor).
+
+    WRITE:
+      / gs_vendor-vendor_number    UNDER 'Vendor',
+        gs_vendor-vendor_name      UNDER 'Vendor Name',
+        gs_vendor-city             UNDER 'City',
+        gs_vendor-country_name     UNDER 'Country',
+        gs_vendor-company_code     UNDER 'Company',
+        gs_vendor-purchasing_org   UNDER 'Purch.Org',
+        gs_vendor-currency         UNDER 'Currency',
+        gs_vendor-account_group    UNDER 'Account Grp',
+        gs_vendor-status           UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Vendors :', lines( gt_vendor ).
+
+ENDFORM.
