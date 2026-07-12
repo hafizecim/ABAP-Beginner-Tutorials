@@ -143,3 +143,37 @@ FORM get_customer_data.
     INTO TABLE @gt_customer.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================================================================',
+    / 'Customer   Customer Name                 City              Country        SalesOrg Company Currency Status',
+    / '==============================================================================================================='.
+
+  FORMAT RESET.
+
+  LOOP AT gt_customer INTO DATA(gs_customer).
+
+    WRITE:
+      / gs_customer-customer_number UNDER 'Customer',
+        gs_customer-customer_name   UNDER 'Customer Name',
+        gs_customer-city            UNDER 'City',
+        gs_customer-country_name    UNDER 'Country',
+        gs_customer-sales_org       UNDER 'SalesOrg',
+        gs_customer-company_code    UNDER 'Company',
+        gs_customer-currency        UNDER 'Currency',
+        gs_customer-status          UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Customers :', lines( gt_customer ).
+
+ENDFORM.
