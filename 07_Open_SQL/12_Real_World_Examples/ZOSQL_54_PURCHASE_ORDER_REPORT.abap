@@ -92,3 +92,65 @@ START-OF-SELECTION.
   ENDIF.
 
   PERFORM display_report.
+*---------------------------------------------------------------------*
+* Form Get Purchase Order Data
+*---------------------------------------------------------------------*
+FORM get_purchase_order_data.
+
+  SELECT
+         ekko~ebeln                                        AS purchase_order,
+         ekpo~ebelp                                        AS item_number,
+
+         ekko~lifnr                                        AS vendor,
+
+         CONCAT_WITH_SPACE(
+             lfa1~name1,
+             lfa1~name2,
+             1 )                                           AS vendor_name,
+
+         ekpo~matnr                                        AS material,
+
+         COALESCE(
+             makt~maktx,
+             'No Description' )                            AS material_text,
+
+         ekpo~menge                                        AS order_quantity,
+         ekpo~meins                                        AS order_unit,
+
+         ekpo~netpr                                        AS net_price,
+
+         ( ekpo~menge * ekpo~netpr )                       AS total_amount,
+
+         ekko~ekorg                                        AS purchasing_org,
+         ekko~waers                                        AS document_currency,
+
+         CASE
+           WHEN ekpo~elikz = @abap_true THEN 'DELIVERED'
+           WHEN ekpo~menge > 0 THEN 'OPEN'
+           ELSE 'UNKNOWN'
+         END                                               AS status
+
+    FROM ekko
+
+      INNER JOIN ekpo
+        ON ekpo~ebeln = ekko~ebeln
+
+      INNER JOIN lfa1
+        ON lfa1~lifnr = ekko~lifnr
+
+      LEFT OUTER JOIN makt
+        ON makt~matnr = ekpo~matnr
+       AND makt~spras = @p_langu
+
+    WHERE ekko~ebeln IN @s_ebeln
+      AND ekko~ekorg IN @s_ekorg
+      AND ekko~lifnr IN @s_lifnr
+      AND ekpo~matnr IN @s_matnr
+
+    ORDER BY
+      ekko~ebeln,
+      ekpo~ebelp
+
+    INTO TABLE @gt_purchase_order.
+
+ENDFORM.
