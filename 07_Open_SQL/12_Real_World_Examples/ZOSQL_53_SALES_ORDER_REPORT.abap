@@ -150,3 +150,40 @@ FORM get_sales_order_data.
     INTO TABLE @gt_sales_order.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '====================================================================================================================================',
+    / 'Sales Order  Item   Customer   Customer Name               Material     Material Description      Qty     Unit   Net Value    Status',
+    / '===================================================================================================================================='.
+
+  FORMAT RESET.
+
+  LOOP AT gt_sales_order INTO DATA(gs_sales_order).
+
+    WRITE:
+      / gs_sales_order-sales_order     UNDER 'Sales Order',
+        gs_sales_order-item_number     UNDER 'Item',
+        gs_sales_order-customer        UNDER 'Customer',
+        gs_sales_order-customer_name   UNDER 'Customer Name',
+        gs_sales_order-material        UNDER 'Material',
+        gs_sales_order-material_text   UNDER 'Material Description',
+        gs_sales_order-order_quantity  UNDER 'Qty',
+        gs_sales_order-sales_unit      UNDER 'Unit',
+        gs_sales_order-total_amount    UNDER 'Net Value',
+        gs_sales_order-status          UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Sales Order Items :',
+      lines( gt_sales_order ).
+
+ENDFORM.
