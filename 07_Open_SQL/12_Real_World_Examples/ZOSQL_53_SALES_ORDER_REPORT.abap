@@ -90,3 +90,63 @@ START-OF-SELECTION.
   ENDIF.
 
   PERFORM display_report.
+*---------------------------------------------------------------------*
+* Form Get Sales Order Data
+*---------------------------------------------------------------------*
+FORM get_sales_order_data.
+
+  SELECT
+         vbak~vbeln                                          AS sales_order,
+         vbap~posnr                                          AS item_number,
+
+         vbak~kunnr                                          AS customer,
+
+         CONCAT_WITH_SPACE(
+             kna1~name1,
+             kna1~name2,
+             1 )                                             AS customer_name,
+
+         vbap~matnr                                          AS material,
+
+         COALESCE(
+             makt~maktx,
+             'No Description' )                              AS material_text,
+
+         vbap~kwmeng                                         AS order_quantity,
+         vbap~vrkme                                          AS sales_unit,
+
+         vbap~netpr                                          AS net_price,
+         vbap~netwr                                          AS total_amount,
+
+         vbak~vkorg                                          AS sales_org,
+
+         CASE
+           WHEN vbap~kwmeng = 0 THEN 'OPEN'
+           WHEN vbap~kwmeng > 0 THEN 'PROCESSED'
+           ELSE 'UNKNOWN'
+         END                                                 AS status
+
+    FROM vbak
+
+      INNER JOIN vbap
+        ON vbap~vbeln = vbak~vbeln
+
+      INNER JOIN kna1
+        ON kna1~kunnr = vbak~kunnr
+
+      LEFT OUTER JOIN makt
+        ON makt~matnr = vbap~matnr
+       AND makt~spras = @p_langu
+
+    WHERE vbak~vbeln IN @s_vbeln
+      AND vbak~vkorg IN @s_vkorg
+      AND vbak~kunnr IN @s_kunnr
+      AND vbap~matnr IN @s_matnr
+
+    ORDER BY
+      vbak~vbeln,
+      vbap~posnr
+
+    INTO TABLE @gt_sales_order.
+
+ENDFORM.
