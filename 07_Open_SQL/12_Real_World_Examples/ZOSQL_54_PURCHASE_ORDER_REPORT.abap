@@ -154,3 +154,41 @@ FORM get_purchase_order_data.
     INTO TABLE @gt_purchase_order.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '================================================================================================================================================================',
+    / 'Purchase Order  Item   Vendor     Vendor Name                 Material     Material Description      Qty     Unit    Net Price     Total Amount   Status',
+    / '================================================================================================================================================================'.
+
+  FORMAT RESET.
+
+  LOOP AT gt_purchase_order INTO DATA(gs_purchase_order).
+
+    WRITE:
+      / gs_purchase_order-purchase_order     UNDER 'Purchase Order',
+        gs_purchase_order-item_number        UNDER 'Item',
+        gs_purchase_order-vendor             UNDER 'Vendor',
+        gs_purchase_order-vendor_name        UNDER 'Vendor Name',
+        gs_purchase_order-material           UNDER 'Material',
+        gs_purchase_order-material_text      UNDER 'Material Description',
+        gs_purchase_order-order_quantity     UNDER 'Qty',
+        gs_purchase_order-order_unit         UNDER 'Unit',
+        gs_purchase_order-net_price          UNDER 'Net Price',
+        gs_purchase_order-total_amount       UNDER 'Total Amount',
+        gs_purchase_order-status             UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Purchase Order Items :',
+      lines( gt_purchase_order ).
+
+ENDFORM.
