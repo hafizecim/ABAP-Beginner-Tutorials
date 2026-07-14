@@ -82,3 +82,41 @@ START-OF-SELECTION.
   SKIP.
 
   PERFORM display_materials.
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         mara~matnr                                        AS material_number,
+
+         COALESCE(
+             makt~maktx,
+             'No Description' )                            AS description,
+
+         mara~mtart                                        AS material_type,
+
+         mara~meins                                        AS base_unit,
+
+         LENGTH( makt~maktx )                              AS text_length,
+
+         CASE
+           WHEN mara~lvorm = @space THEN 'ACTIVE'
+           ELSE 'MARKED'
+         END                                               AS status
+
+    FROM mara
+
+      LEFT OUTER JOIN makt
+        ON makt~matnr = mara~matnr
+       AND makt~spras = @p_langu
+
+    WHERE mara~matnr IN @s_matnr
+      AND mara~mtart IN @s_mtart
+
+    ORDER BY
+      mara~matnr
+
+    INTO TABLE @gt_material.
+
+ENDFORM.
