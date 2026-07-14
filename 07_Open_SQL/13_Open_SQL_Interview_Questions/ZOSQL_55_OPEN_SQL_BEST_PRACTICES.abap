@@ -120,3 +120,65 @@ FORM get_material_data.
     INTO TABLE @gt_material.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Best Practices
+*---------------------------------------------------------------------*
+FORM display_best_practices.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '==============================================================',
+    / '        MODERN ABAP OPEN SQL BEST PRACTICES',
+    / '=============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: / '✓ Select only required fields (Avoid SELECT *)'.
+  WRITE: / '✓ Always use WHERE conditions'.
+  WRITE: / '✓ Prefer JOIN instead of nested SELECT'.
+  WRITE: / '✓ Use Host Variables (@)'.
+  WRITE: / '✓ Use COALESCE for NULL handling'.
+  WRITE: / '✓ Use CASE expressions'.
+  WRITE: / '✓ Perform calculations in SQL when appropriate'.
+  WRITE: / '✓ Always use ORDER BY if record order matters'.
+  WRITE: / '✓ Use Inline Declarations'.
+  WRITE: / '✓ Check the result before processing'.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  ULINE.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '=========================================================================================',
+    / 'Material      Description                  Type     Unit   Length   Status',
+    / '========================================================================================='.
+
+  FORMAT RESET.
+
+  LOOP AT gt_material INTO DATA(gs_material).
+
+    WRITE:
+      / gs_material-material_number UNDER 'Material',
+        gs_material-description     UNDER 'Description',
+        gs_material-material_type   UNDER 'Type',
+        gs_material-base_unit       UNDER 'Unit',
+        gs_material-text_length     UNDER 'Length',
+        gs_material-status          UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Materials :',
+      lines( gt_material ).
+
+ENDFORM.
