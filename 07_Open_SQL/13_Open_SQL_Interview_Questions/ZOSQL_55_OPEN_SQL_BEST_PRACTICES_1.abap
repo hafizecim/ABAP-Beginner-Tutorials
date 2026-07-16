@@ -150,3 +150,52 @@ FORM get_material_data.
    INTO TABLE @gt_material.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Best Practices
+*---------------------------------------------------------------------*
+FORM display_best_practices.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '          MODERN ABAP OPEN SQL BEST PRACTICES',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+
+  WRITE: / '[1] Select only the required fields (Avoid SELECT *)'.
+  WRITE: / '[2] Always use WHERE conditions'.
+  WRITE: / '[3] Use Host Variables (@)'.
+  WRITE: / '[4] Prefer JOIN instead of Nested SELECT'.
+  WRITE: / '[5] Handle NULL values with COALESCE'.
+  WRITE: / '[6] Use CASE expressions'.
+  WRITE: / '[7] Perform calculations in SQL whenever possible'.
+  WRITE: / '[8] Always use ORDER BY when record order matters'.
+  WRITE: / '[9] Use Inline Declarations'.
+  WRITE: / '[10] Validate the result before processing'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Material Report
+*---------------------------------------------------------------------*
+FORM display_material_report.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================================================================',
+    / 'Material      Description                  Type   Group   Plant  Unit Length Status',
+    / '==============================================================================================================='.
+
+  FORMAT RESET.
+
+  LOOP AT gt_material INTO DATA(gs_material).
+
+    WRITE:
+      / gs_material-material_number UNDER '
