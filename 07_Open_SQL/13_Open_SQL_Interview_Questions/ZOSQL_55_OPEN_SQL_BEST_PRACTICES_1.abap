@@ -103,3 +103,50 @@ START-OF-SELECTION.
   SKIP 2.
 
   PERFORM display_material_report.
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         mara~matnr                                        AS material_number,
+
+         COALESCE(
+           makt~maktx,
+           'No Description' )                              AS material_text,
+
+         mara~mtart                                        AS material_type,
+         mara~matkl                                        AS material_group,
+         marc~werks                                        AS plant,
+         mara~meins                                        AS base_unit,
+
+         CHAR_LENGTH( COALESCE(
+             makt~maktx,
+             '' ) )                                        AS text_length,
+
+         CASE
+           WHEN mara~lvorm = @space THEN 'ACTIVE'
+           ELSE 'MARKED FOR DELETION'
+         END                                               AS status
+
+    FROM mara
+
+      INNER JOIN marc
+        ON marc~matnr = mara~matnr
+
+      LEFT OUTER JOIN makt
+        ON makt~matnr = mara~matnr
+       AND makt~spras = @p_langu
+
+   WHERE mara~matnr IN @s_matnr
+     AND mara~mtart IN @s_mtart
+     AND mara~matkl IN @s_matkl
+     AND marc~werks IN @s_werks
+
+   ORDER BY
+       mara~matnr,
+       marc~werks
+
+   INTO TABLE @gt_material.
+
+ENDFORM.
