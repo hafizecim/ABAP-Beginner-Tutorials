@@ -145,3 +145,85 @@ FORM get_material_data.
    INTO TABLE @gt_material.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Performance Guide
+*---------------------------------------------------------------------*
+FORM display_performance_guide.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '            OPEN SQL PERFORMANCE GUIDELINES',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+  WRITE: / '1. Read only the required database fields.'.
+  WRITE: / '2. Never use SELECT * unless it is really necessary.'.
+  WRITE: / '3. Always filter data using WHERE conditions.'.
+  WRITE: / '4. Prefer indexed fields in WHERE clauses.'.
+  WRITE: / '5. Use JOIN instead of nested SELECT statements.'.
+  WRITE: / '6. Handle NULL values with COALESCE.'.
+  WRITE: / '7. Use CASE expressions in SQL when appropriate.'.
+  WRITE: / '8. Sort data in the database using ORDER BY.'.
+  WRITE: / '9. Limit the result set using UP TO n ROWS.'.
+  WRITE: / '10. Use Host Variables (@) in Open SQL.'.
+  WRITE: / '11. Avoid unnecessary DISTINCT operations.'.
+  WRITE: / '12. Analyze SQL performance using ST05 and SQL Monitor.'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  DATA(ls_material) = VALUE ty_material( ).
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '======================================================================================================',
+    / 'Material      Description                  Type    Plant   Unit   Status',
+    / '======================================================================================================'.
+
+  FORMAT RESET.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number UNDER 'Material',
+        ls_material-material_text   UNDER 'Description',
+        ls_material-material_type   UNDER 'Type',
+        ls_material-plant           UNDER 'Plant',
+        ls_material-base_unit       UNDER 'Unit',
+        ls_material-status          UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Number of Retrieved Records :', lines( gt_material ).
+
+  SKIP.
+
+  WRITE:
+    / 'Performance Recommendation:'.
+
+  WRITE:
+    / '- Read only required columns.'.
+  WRITE:
+    / '- Filter data in the database.'.
+  WRITE:
+    / '- Avoid unnecessary database access.'.
+  WRITE:
+    / '- Keep SQL statements simple and readable.'.
+  WRITE:
+    / '- Use modern Open SQL syntax consistently.'.
+
+ENDFORM.
