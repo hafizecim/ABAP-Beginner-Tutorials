@@ -149,3 +149,72 @@ FORM get_material_data.
    INTO TABLE @gt_material.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  DATA(ls_material) = VALUE ty_material( ).
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '=====================================================================================================',
+    / 'Material      Description                  Type    Plant    Unit    Status',
+    / '====================================================================================================='.
+
+  FORMAT RESET.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number UNDER 'Material',
+        ls_material-material_text   UNDER 'Description',
+        ls_material-material_type   UNDER 'Type',
+        ls_material-plant           UNDER 'Plant',
+        ls_material-base_unit       UNDER 'Unit',
+        ls_material-status          UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Retrieved Records :', lines( gt_material ).
+
+  SKIP 2.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Performance Evaluation'.
+
+  FORMAT RESET.
+
+  WRITE: / '--------------------------------------------------------------'.
+  WRITE: / '✔ Only required columns are selected.'.
+  WRITE: / '✔ WHERE conditions reduce database workload.'.
+  WRITE: / '✔ JOIN minimizes unnecessary database access.'.
+  WRITE: / '✔ ORDER BY is executed by the database.'.
+  WRITE: / '✔ COALESCE prevents NULL-related issues.'.
+  WRITE: / '✔ CASE expressions simplify application logic.'.
+  WRITE: / '✔ Result set is limited using UP TO n ROWS.'.
+  WRITE: / '✔ Modern Open SQL syntax improves readability.'.
+  WRITE: / '✔ Host Variables (@) ensure safe parameter handling.'.
+  WRITE: / '✔ Clean ABAP principles improve maintainability.'.
+
+  ULINE.
+
+  WRITE:
+    / 'Recommendation:'.
+
+  WRITE:
+    / '- Use ST05 SQL Trace for SQL performance analysis.'.
+  WRITE:
+    / '- Use SQL Monitor (SQLM) to identify expensive statements.'.
+  WRITE:
+    / '- Run ATC or Code Inspector regularly.'.
+  WRITE:
+    / '- Review database indexes before optimizing ABAP code.'.
+
+ENDFORM.
