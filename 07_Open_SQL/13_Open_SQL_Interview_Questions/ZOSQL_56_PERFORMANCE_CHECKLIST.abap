@@ -103,3 +103,49 @@ START-OF-SELECTION.
   ENDIF.
 
   PERFORM display_report.
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         mara~matnr                                       AS material_number,
+
+         COALESCE(
+           makt~maktx,
+           'No Description' )                             AS material_text,
+
+         mara~mtart                                       AS material_type,
+
+         marc~werks                                       AS plant,
+
+         mara~meins                                       AS base_unit,
+
+         CASE
+           WHEN mara~lvorm = @abap_false
+             THEN 'ACTIVE'
+           ELSE 'MARKED'
+         END                                              AS status
+
+    FROM mara
+
+      INNER JOIN marc
+        ON marc~matnr = mara~matnr
+
+      LEFT OUTER JOIN makt
+        ON makt~matnr = mara~matnr
+       AND makt~spras = @p_langu
+
+   WHERE mara~matnr IN @s_matnr
+     AND mara~mtart IN @s_mtart
+     AND marc~werks IN @s_werks
+
+   ORDER BY
+       mara~matnr,
+       marc~werks
+
+   UP TO @p_limit ROWS
+
+   INTO TABLE @gt_material.
+
+ENDFORM.
