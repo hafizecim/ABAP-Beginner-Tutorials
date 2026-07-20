@@ -157,3 +157,97 @@ FORM get_material_data.
 *---------------------------------------------------------------------*
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Comparison
+*---------------------------------------------------------------------*
+FORM display_comparison.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '             OPEN SQL vs NATIVE SQL',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Open SQL Advantages'.
+
+  ULINE.
+
+  WRITE: / '✔ Database independent'.
+  WRITE: / '✔ Supported on all SAP databases'.
+  WRITE: / '✔ Uses SAP Open SQL syntax'.
+  WRITE: / '✔ Supports Host Variables (@)'.
+  WRITE: / '✔ Integrates with SAP buffering'.
+  WRITE: / '✔ Recommended for new developments'.
+
+  SKIP.
+
+  WRITE:
+    / 'Native SQL Characteristics'.
+
+  ULINE.
+
+  WRITE: / '• Database dependent'.
+  WRITE: / '• Uses database-specific SQL syntax'.
+  WRITE: / '• Bypasses SAP buffering'.
+  WRITE: / '• Limited portability'.
+  WRITE: / '• Recommended only for special scenarios'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Report
+*---------------------------------------------------------------------*
+FORM display_report.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================================',
+    / 'Material      Description                  Type      Unit      Status',
+    / '==============================================================================='.
+
+  FORMAT RESET.
+
+  LOOP AT gt_material INTO DATA(gs_material).
+
+    WRITE:
+      / gs_material-material_number UNDER 'Material',
+        gs_material-material_text   UNDER 'Description',
+        gs_material-material_type   UNDER 'Type',
+        gs_material-base_unit       UNDER 'Unit',
+        gs_material-status          UNDER 'Status'.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Records :', lines( gt_material ).
+
+  SKIP 2.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Recommendation'.
+
+  FORMAT RESET.
+
+  WRITE:
+    / '- Use Open SQL for all standard SAP developments.'.
+  WRITE:
+    / '- Prefer portable and database-independent SQL.'.
+  WRITE:
+    / '- Use Native SQL only when Open SQL cannot meet the requirement.'.
+  WRITE:
+    / '- Keep SQL statements readable and maintainable.'.
+  WRITE:
+    / '- Follow Clean ABAP and performance best practices.'.
+
+ENDFORM.
