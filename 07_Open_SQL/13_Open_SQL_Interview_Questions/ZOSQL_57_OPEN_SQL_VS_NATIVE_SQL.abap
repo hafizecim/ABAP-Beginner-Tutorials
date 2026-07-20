@@ -96,3 +96,64 @@ START-OF-SELECTION.
   ENDIF.
 
   PERFORM display_report.
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+*----------------------------------------------------------------------*
+* Open SQL (Recommended)
+*----------------------------------------------------------------------*
+
+  SELECT
+         mara~matnr                                     AS material_number,
+         COALESCE(
+           makt~maktx,
+           'No Description' )                           AS material_text,
+         mara~mtart                                     AS material_type,
+         mara~meins                                     AS base_unit,
+
+         CASE
+           WHEN mara~lvorm = @space
+             THEN 'ACTIVE'
+           ELSE 'MARKED'
+         END                                            AS status
+
+    FROM mara
+
+      LEFT OUTER JOIN makt
+        ON makt~matnr = mara~matnr
+       AND makt~spras = @p_langu
+
+   WHERE mara~matnr IN @s_matnr
+     AND mara~mtart IN @s_mtart
+
+   ORDER BY
+       mara~matnr
+
+   INTO TABLE @gt_material.
+
+*---------------------------------------------------------------------*
+* Native SQL Example (Do NOT use in this demo)
+*---------------------------------------------------------------------*
+*
+* EXEC SQL.
+*   SELECT MATNR,
+*          MTART,
+*          MEINS
+*     INTO :lv_matnr,
+*          :lv_mtart,
+*          :lv_meins
+*     FROM MARA
+*    WHERE MATNR = :lv_matnr
+* ENDEXEC.
+*
+* Notes
+* - Database dependent
+* - Bypasses Open SQL abstraction
+* - May reduce portability
+* - Requires database-specific SQL syntax
+*
+*---------------------------------------------------------------------*
+
+ENDFORM.
