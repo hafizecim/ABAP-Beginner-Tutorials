@@ -95,3 +95,54 @@ START-OF-SELECTION.
 END-OF-SELECTION.
 
   PERFORM display_footer.
+*---------------------------------------------------------------------*
+* Form Display Header
+*---------------------------------------------------------------------*
+FORM display_header.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '==============================================================',
+    / '                FORM ROUTINES DEMONSTRATION',
+    / '=============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+  WRITE: / 'This report demonstrates how FORM routines'.
+  WRITE: / 'can be used to organize ABAP programs.'.
+
+  SKIP.
+
+  WRITE: / 'Execution Steps:'.
+  WRITE: / ' 1. Display report header'.
+  WRITE: / ' 2. Read material master data'.
+  WRITE: / ' 3. Display material list'.
+  WRITE: / ' 4. Display report summary'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+
+    FROM mara
+
+   WHERE matnr IN @s_matnr
+
+   ORDER BY matnr
+
+   UP TO @p_limit ROWS
+
+   INTO TABLE @gt_material.
+
+ENDFORM.
