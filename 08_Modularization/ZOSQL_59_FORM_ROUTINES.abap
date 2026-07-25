@@ -146,3 +146,86 @@ FORM get_material_data.
    INTO TABLE @gt_material.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  DATA(ls_material) = VALUE ty_material( ).
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     MATERIAL REPORT',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number,
+        25 ls_material-material_type,
+        45 ls_material-base_unit.
+
+  ENDLOOP.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                    REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Materials :', lines( gt_material ).
+
+  SKIP.
+
+  WRITE: / 'FORM Routines Used:'.
+  WRITE: / ' - DISPLAY_HEADER'.
+  WRITE: / ' - GET_MATERIAL_DATA'.
+  WRITE: / ' - DISPLAY_MATERIALS'.
+  WRITE: / ' - DISPLAY_FOOTER'.
+
+  SKIP.
+
+  WRITE: / 'Benefits of FORM Routines:'.
+
+  WRITE: / ' * Improve code readability'.
+  WRITE: / ' * Separate business logic'.
+  WRITE: / ' * Reduce duplicated code'.
+  WRITE: / ' * Simplify program maintenance'.
+  WRITE: / ' * Support reusable program structure'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
