@@ -97,3 +97,54 @@ START-OF-SELECTION.
 END-OF-SELECTION.
 
   PERFORM display_summary.
+*---------------------------------------------------------------------*
+* Form Display Program Information
+*---------------------------------------------------------------------*
+FORM display_program_info.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '==============================================================',
+    / '          ABAP MODULARIZATION INTRODUCTION',
+    / '=============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+  WRITE: / 'This report demonstrates the fundamentals of'.
+  WRITE: / 'modular programming in Classical ABAP.'.
+
+  SKIP.
+
+  WRITE: / 'Program Flow:'.
+  WRITE: / ' 1. Display introduction'.
+  WRITE: / ' 2. Read material master data'.
+  WRITE: / ' 3. Display retrieved data'.
+  WRITE: / ' 4. Display execution summary'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Materials
+*---------------------------------------------------------------------*
+FORM get_materials.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+
+    FROM mara
+
+   WHERE matnr IN @s_matnr
+
+   ORDER BY matnr
+
+   UP TO @p_max ROWS
+
+   INTO TABLE @gt_material.
+
+ENDFORM.
