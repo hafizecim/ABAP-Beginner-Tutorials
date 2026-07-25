@@ -148,3 +148,82 @@ FORM get_materials.
    INTO TABLE @gt_material.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  DATA(ls_material) = VALUE ty_material( ).
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '=============================================================',
+    / '                 MATERIAL LIST',
+    / '============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number,
+        25 ls_material-material_type,
+        45 ls_material-base_unit.
+
+  ENDLOOP.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Summary
+*---------------------------------------------------------------------*
+FORM display_summary.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '=============================================================',
+    / '              MODULARIZATION SUMMARY',
+    / '============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+  WRITE: / 'Advantages of Modular Programming'.
+  ULINE.
+
+  WRITE: / '1. Improves code readability.'.
+  WRITE: / '2. Simplifies maintenance.'.
+  WRITE: / '3. Encourages code reuse.'.
+  WRITE: / '4. Makes testing easier.'.
+  WRITE: / '5. Separates business logic clearly.'.
+  WRITE: / '6. Reduces duplicate code.'.
+  WRITE: / '7. Improves team collaboration.'.
+  WRITE: / '8. Supports Clean ABAP principles.'.
+
+  SKIP.
+
+  WRITE:
+    / 'Total Materials Selected :',
+      lines( gt_material ).
+
+  SKIP.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program completed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
