@@ -160,3 +160,93 @@ FORM calculate_total
   cv_count = lines( gt_material ).
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  DATA ls_material TYPE ty_material.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                    MATERIAL REPORT',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number,
+        25 ls_material-material_type,
+        45 ls_material-base_unit.
+
+  ENDLOOP.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer
+  USING
+    iv_total TYPE i.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Materials Selected :', iv_total.
+
+  SKIP.
+
+  WRITE: / 'PERFORM Statement Examples'.
+
+  ULINE.
+
+  WRITE: / '1. PERFORM display_header.'.
+  WRITE: / '2. PERFORM get_material_data.'.
+  WRITE: / '3. PERFORM calculate_total CHANGING gv_count.'.
+  WRITE: / '4. PERFORM display_footer USING gv_count.'.
+
+  SKIP.
+
+  WRITE: / 'PERFORM Advantages'.
+
+  ULINE.
+
+  WRITE: / '- Improves program readability.'.
+  WRITE: / '- Separates business logic into routines.'.
+  WRITE: / '- Reduces duplicate code.'.
+  WRITE: / '- Simplifies maintenance.'.
+  WRITE: / '- Supports reusable program modules.'.
+
+  SKIP.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program finished successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
