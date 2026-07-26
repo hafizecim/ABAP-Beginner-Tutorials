@@ -101,3 +101,72 @@ END-OF-SELECTION.
     USING
       gv_total
       gv_counter.
+*---------------------------------------------------------------------*
+* Form Display Header
+*---------------------------------------------------------------------*
+FORM display_header.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '            CHANGING PARAMETERS DEMONSTRATION',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+  WRITE: / 'This report demonstrates how CHANGING parameters'.
+  WRITE: / 'allow FORM routines to modify caller variables.'.
+
+  SKIP.
+
+  WRITE: / 'Execution Flow:'.
+  WRITE: / ' 1. Display report header'.
+  WRITE: / ' 2. Read material master data'.
+  WRITE: / ' 3. Calculate statistics using CHANGING'.
+  WRITE: / ' 4. Display material list'.
+  WRITE: / ' 5. Display report summary'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+    FROM mara
+   WHERE matnr IN @s_matnr
+   ORDER BY matnr
+   UP TO @p_limit ROWS
+   INTO TABLE @gt_material.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Calculate Statistics
+*---------------------------------------------------------------------*
+FORM calculate_statistics
+  CHANGING
+    cv_total   TYPE i
+    cv_counter TYPE i.
+
+  CLEAR:
+    cv_total,
+    cv_counter.
+
+  cv_total = lines( gt_material ).
+
+  LOOP AT gt_material INTO DATA(ls_material).
+
+    cv_counter = cv_counter + 1.
+
+  ENDLOOP.
+
+ENDFORM.
