@@ -181,3 +181,67 @@ FORM display_materials
   ULINE.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer
+  USING
+    iv_total TYPE i.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Materials :', iv_total.
+
+  SKIP.
+
+  WRITE: / 'TABLES Parameter Characteristics'.
+
+  ULINE.
+
+  WRITE: / '- Used in Classical ABAP reports.'.
+  WRITE: / '- Passes internal tables to FORM routines.'.
+  WRITE: / '- Still exists for backward compatibility.'.
+  WRITE: / '- Frequently found in legacy SAP systems.'.
+
+  SKIP.
+
+  WRITE: / 'Modern ABAP Recommendation'.
+
+  ULINE.
+
+  WRITE: / '- Prefer USING for input parameters.'.
+  WRITE: / '- Prefer CHANGING for output parameters.'.
+  WRITE: / '- Use explicit parameter typing.'.
+  WRITE: / '- Avoid TABLES in new developments.'.
+  WRITE: / '- Prefer methods in ABAP Objects.'.
+
+  SKIP.
+
+  WRITE: / 'TABLES vs CHANGING'.
+
+  ULINE.
+
+  WRITE: / 'TABLES    : Classical syntax (obsolete for new code).'.
+  WRITE: / 'CHANGING  : Recommended for modern procedural ABAP.'.
+  WRITE: / 'METHODS   : Recommended for new object-oriented ABAP.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
