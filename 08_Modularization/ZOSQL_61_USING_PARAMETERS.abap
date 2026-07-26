@@ -96,3 +96,65 @@ END-OF-SELECTION.
     USING lines( gt_material )
           sy-datum
           sy-uzeit.
+*---------------------------------------------------------------------*
+* Form Display Header
+*---------------------------------------------------------------------*
+FORM display_header.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '             USING PARAMETERS DEMONSTRATION',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+  WRITE: / 'This report demonstrates USING parameters'.
+  WRITE: / 'in FORM routines.'.
+
+  SKIP.
+
+  WRITE: / 'Execution Flow:'.
+  WRITE: / ' 1. Display report header'.
+  WRITE: / ' 2. Read material master data'.
+  WRITE: / ' 3. Display materials using FORM routines'.
+  WRITE: / ' 4. Display report summary'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+    FROM mara
+   WHERE matnr IN @s_matnr
+   ORDER BY matnr
+   UP TO @p_limit ROWS
+   INTO TABLE @gt_material.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Material Information
+*---------------------------------------------------------------------*
+FORM display_material_info
+  USING
+    iv_material_number TYPE mara-matnr
+    iv_material_type   TYPE mara-mtart
+    iv_base_unit       TYPE mara-meins.
+
+  WRITE:
+    / iv_material_number,
+      25 iv_material_type,
+      45 iv_base_unit.
+
+ENDFORM.
