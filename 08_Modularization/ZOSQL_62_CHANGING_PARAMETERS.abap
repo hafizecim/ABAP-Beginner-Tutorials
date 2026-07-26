@@ -170,3 +170,94 @@ FORM calculate_statistics
   ENDLOOP.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  DATA ls_material TYPE ty_material.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                    MATERIAL REPORT',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number,
+        25 ls_material-material_type,
+        45 ls_material-base_unit.
+
+  ENDLOOP.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer
+  USING
+    iv_total   TYPE i
+    iv_counter TYPE i.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                    REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Records     :', iv_total,
+    / 'Processed Records :', iv_counter.
+
+  SKIP.
+
+  WRITE: / 'CHANGING Parameter Benefits'.
+
+  ULINE.
+
+  WRITE: / '- Updates caller variables directly.'.
+  WRITE: / '- Suitable for calculated results.'.
+  WRITE: / '- Supports multiple output values.'.
+  WRITE: / '- Reduces unnecessary global variables.'.
+  WRITE: / '- Improves modular program design.'.
+  WRITE: / '- Makes FORM routines reusable.'.
+
+  SKIP.
+
+  WRITE: / 'USING vs CHANGING'.
+
+  ULINE.
+
+  WRITE: / 'USING     : Input parameters only.'.
+  WRITE: / 'CHANGING  : Input and output parameters.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
