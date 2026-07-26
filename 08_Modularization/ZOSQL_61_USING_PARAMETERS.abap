@@ -158,3 +158,87 @@ FORM display_material_info
       45 iv_base_unit.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  DATA ls_material TYPE ty_material.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                  MATERIAL LIST',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO ls_material.
+
+    PERFORM display_material_info
+      USING ls_material-material_number
+            ls_material-material_type
+            ls_material-base_unit.
+
+  ENDLOOP.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer
+  USING
+    iv_total TYPE i
+    iv_date  TYPE sydatum
+    iv_time  TYPE syuzeit.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                    REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Materials :', iv_total,
+    / 'Execution Date  :', iv_date,
+    / 'Execution Time  :', iv_time.
+
+  SKIP.
+
+  WRITE: / 'USING Parameter Advantages'.
+
+  ULINE.
+
+  WRITE: / '- Transfers input values to FORM routines.'.
+  WRITE: / '- Makes routines reusable.'.
+  WRITE: / '- Improves program readability.'.
+  WRITE: / '- Reduces duplicated code.'.
+  WRITE: / '- Supports modular programming.'.
+  WRITE: / '- Encourages Clean ABAP design.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Report executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
