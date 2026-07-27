@@ -140,3 +140,82 @@ FORM display_materials.
   ULINE.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Materials Selected :', lines( gt_material ).
+
+  SKIP.
+
+  WRITE: / 'INCLUDE Program Advantages'.
+
+  ULINE.
+
+  WRITE: / '- Improves program organization.'.
+  WRITE: / '- Separates program responsibilities.'.
+  WRITE: / '- Makes large programs easier to maintain.'.
+  WRITE: / '- Encourages code reuse.'.
+  WRITE: / '- Simplifies team development.'.
+  WRITE: / '- Reduces code duplication.'.
+
+  SKIP.
+
+  WRITE: / 'Common INCLUDE Structure'.
+
+  ULINE.
+
+  WRITE: / 'TOP  : Global data declarations'.
+  WRITE: / 'SEL  : Selection screen definitions'.
+  WRITE: / 'F01  : FORM routines'.
+  WRITE: / 'O01  : PBO modules'.
+  WRITE: / 'I01  : PAI modules'.
+  WRITE: / 'E01  : Event blocks'.
+  WRITE: / 'C01  : Local classes'.
+  WRITE: / 'M01  : Macros'.
+
+  SKIP.
+
+  WRITE: / 'Best Practices'.
+
+  ULINE.
+
+  WRITE: / '- Keep each INCLUDE focused on one responsibility.'.
+  WRITE: / '- Use meaningful INCLUDE names.'.
+  WRITE: / '- Minimize global variables.'.
+  WRITE: / '- Group related FORM routines together.'.
+  WRITE: / '- Keep the main program readable.'.
+
+  SKIP.
+
+  WRITE: / 'Modern ABAP Recommendation'.
+
+  ULINE.
+
+  WRITE: / '- Prefer local classes and methods in new developments.'.
+  WRITE: / '- Use INCLUDE programs mainly in legacy applications.'.
+  WRITE: / '- Continue following Clean ABAP principles.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
