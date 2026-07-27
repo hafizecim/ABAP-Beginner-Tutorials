@@ -95,3 +95,85 @@ END-OF-SELECTION.
 
   PERFORM display_footer
     USING gv_total.
+*---------------------------------------------------------------------*
+* Form Display Header
+*---------------------------------------------------------------------*
+FORM display_header.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '             LOCAL SUBROUTINES DEMONSTRATION',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE: /.
+  WRITE: / 'This report demonstrates the use of local'.
+  WRITE: / 'subroutines in Classical ABAP programs.'.
+
+  SKIP.
+
+  WRITE: / 'Program Flow:'.
+  WRITE: / ' 1. Display report header'.
+  WRITE: / ' 2. Read material master data'.
+  WRITE: / ' 3. Display material list'.
+  WRITE: / ' 4. Display execution summary'.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+    FROM mara
+   WHERE matnr IN @s_matnr
+   ORDER BY matnr
+   UP TO @p_limit ROWS
+   INTO TABLE @gt_material.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  DATA ls_material TYPE ty_material.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     MATERIAL LIST',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number,
+        25 ls_material-material_type,
+        45 ls_material-base_unit.
+
+  ENDLOOP.
+
+  ULINE.
+
+ENDFORM.
