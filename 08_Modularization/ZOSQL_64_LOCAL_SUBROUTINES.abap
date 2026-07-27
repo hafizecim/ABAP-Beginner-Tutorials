@@ -177,3 +177,69 @@ FORM display_materials.
   ULINE.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer
+  USING
+    iv_total TYPE i.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Materials Selected :', iv_total.
+
+  SKIP.
+
+  WRITE: / 'Advantages of Local Subroutines'.
+
+  ULINE.
+
+  WRITE: / '- Improve program readability.'.
+  WRITE: / '- Divide large programs into smaller units.'.
+  WRITE: / '- Eliminate duplicated code.'.
+  WRITE: / '- Simplify maintenance and testing.'.
+  WRITE: / '- Increase code reusability.'.
+  WRITE: / '- Support structured programming.'.
+
+  SKIP.
+
+  WRITE: / 'Best Practices'.
+
+  ULINE.
+
+  WRITE: / '- Keep each FORM focused on one task.'.
+  WRITE: / '- Use meaningful routine names.'.
+  WRITE: / '- Avoid unnecessary global variables.'.
+  WRITE: / '- Prefer USING and CHANGING parameters.'.
+  WRITE: / '- Keep routines short and readable.'.
+
+  SKIP.
+
+  WRITE: / 'Modern ABAP Recommendation'.
+
+  ULINE.
+
+  WRITE: / '- Use local classes and methods in new developments.'.
+  WRITE: / '- FORM routines are mainly used in legacy programs.'.
+  WRITE: / '- Understand FORM/PERFORM for maintenance projects.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
