@@ -179,3 +179,50 @@ START-OF-SELECTION.
 END-OF-SELECTION.
 
   PERFORM display_footer.
+*---------------------------------------------------------------------*
+* Include ZOSQL_67_SEL
+* Purpose : Selection Screen Definitions
+*---------------------------------------------------------------------*
+
+SELECTION-SCREEN BEGIN OF BLOCK b01
+                 WITH FRAME
+                 TITLE TEXT-001.
+
+SELECT-OPTIONS:
+  s_matnr FOR mara-matnr.
+
+PARAMETERS:
+  p_limit TYPE i DEFAULT 20.
+
+SELECTION-SCREEN END OF BLOCK b01.
+
+SELECTION-SCREEN SKIP.
+
+SELECTION-SCREEN BEGIN OF BLOCK b02
+                 WITH FRAME
+                 TITLE TEXT-002.
+
+PARAMETERS:
+  p_mtart TYPE mara-mtart,
+  p_meins TYPE mara-meins.
+
+SELECTION-SCREEN END OF BLOCK b02.
+
+SELECTION-SCREEN SKIP.
+
+SELECTION-SCREEN BEGIN OF BLOCK b03
+                 WITH FRAME
+                 TITLE TEXT-003.
+
+PARAMETERS:
+  p_active AS CHECKBOX DEFAULT 'X',
+  p_detail AS CHECKBOX.
+
+SELECTION-SCREEN END OF BLOCK b03.
+
+SELECTION-SCREEN ULINE.
+
+SELECTION-SCREEN COMMENT /1(60) TEXT-004.
+
+SELECTION-SCREEN PUSHBUTTON /1(20) gv_button
+                         USER-COMMAND INFO.
