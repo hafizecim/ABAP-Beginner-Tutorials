@@ -226,3 +226,127 @@ SELECTION-SCREEN COMMENT /1(60) TEXT-004.
 
 SELECTION-SCREEN PUSHBUTTON /1(20) gv_button
                          USER-COMMAND INFO.
+*---------------------------------------------------------------------*
+* Include ZOSQL_67_F01
+* Purpose : FORM Routines
+*---------------------------------------------------------------------*
+
+*---------------------------------------------------------------------*
+* Form Initialize Program
+*---------------------------------------------------------------------*
+FORM initialize_program.
+
+  TEXT-001 = 'Material Selection'.
+  TEXT-002 = 'Additional Filters'.
+  TEXT-003 = 'Report Options'.
+  TEXT-004 = 'Enter the required selection criteria and execute the report.'.
+
+  gv_button = 'Help'.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Validate Selection Screen
+*---------------------------------------------------------------------*
+FORM validate_selection_screen.
+
+  IF p_limit <= 0.
+
+    MESSAGE 'Maximum number of records must be greater than zero.'
+      TYPE 'E'.
+
+  ENDIF.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Header
+*---------------------------------------------------------------------*
+FORM display_header.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '          SELECTION SCREEN INCLUDE DEMONSTRATION',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  SKIP.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+    FROM mara
+    WHERE matnr IN @s_matnr
+      AND mtart = @p_mtart
+      AND meins = @p_meins
+    ORDER BY matnr
+    UP TO @p_limit ROWS
+    INTO TABLE @gt_material.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO gs_material.
+
+    WRITE:
+      / gs_material-material_number,
+        25 gs_material-material_type,
+        45 gs_material-base_unit.
+
+  ENDLOOP.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer.
+
+  SKIP 2.
+
+  ULINE.
+
+  WRITE:
+    / 'Total Materials :', lines( gt_material ).
+
+  SKIP.
+
+  WRITE: / 'Selection Screen Include Best Practices'.
+
+  ULINE.
+
+  WRITE: / '- Keep all selection screen objects in SEL include.'.
+  WRITE: / '- Validate user input in AT SELECTION-SCREEN.'.
+  WRITE: / '- Group related fields into logical blocks.'.
+  WRITE: / '- Use meaningful titles and comments.'.
+  WRITE: / '- Keep the main program clean and readable.'.
+
+  SKIP.
+
+  WRITE: / 'Program executed successfully.'.
+
+ENDFORM.
