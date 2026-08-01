@@ -61,3 +61,79 @@ START-OF-SELECTION.
 END-OF-SELECTION.
 
   PERFORM display_footer.
+*---------------------------------------------------------------------*
+* Include ZOSQL_68_F01
+* Purpose : FORM Routines
+*---------------------------------------------------------------------*
+
+*---------------------------------------------------------------------*
+* Form Initialize Program
+*---------------------------------------------------------------------*
+FORM initialize_program.
+
+  TEXT-001 = 'Material Selection'.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Validate Selection Screen
+*---------------------------------------------------------------------*
+FORM validate_selection_screen.
+
+  IF p_limit <= 0.
+
+    MESSAGE 'Record limit must be greater than zero.'
+      TYPE 'E'.
+
+  ENDIF.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Header
+*---------------------------------------------------------------------*
+FORM display_header.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                FORM INCLUDE DEMONSTRATION',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Program :', sy-repid,
+    / 'Date    :', sy-datum,
+    / 'Time    :', sy-uzeit.
+
+  SKIP.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+    FROM mara
+   WHERE matnr IN @s_matnr
+   ORDER BY matnr
+   UP TO @p_limit ROWS
+   INTO TABLE @gt_material.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Calculate Statistics
+*---------------------------------------------------------------------*
+FORM calculate_statistics.
+
+  gv_total_materials = lines( gt_material ).
+
+ENDFORM.
