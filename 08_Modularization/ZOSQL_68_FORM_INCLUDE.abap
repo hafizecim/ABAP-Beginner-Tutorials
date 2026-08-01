@@ -137,3 +137,101 @@ FORM calculate_statistics.
   gv_total_materials = lines( gt_material ).
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  DATA ls_material TYPE ty_material.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     MATERIAL REPORT',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO ls_material.
+
+    WRITE:
+      / ls_material-material_number,
+        25 ls_material-material_type,
+        45 ls_material-base_unit.
+
+  ENDLOOP.
+
+  ULINE.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                     REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Materials :', gv_total_materials.
+
+  SKIP.
+
+  WRITE: / 'FORM INCLUDE Best Practices'.
+
+  ULINE.
+
+  WRITE: / '- Keep business logic inside F01 include.'.
+  WRITE: / '- Keep each FORM routine focused on one task.'.
+  WRITE: / '- Use meaningful FORM names.'.
+  WRITE: / '- Minimize the use of global variables.'.
+  WRITE: / '- Reuse FORM routines where appropriate.'.
+  WRITE: / '- Keep the main report short and readable.'.
+
+  SKIP.
+
+  WRITE: / 'Recommended Project Structure'.
+
+  ULINE.
+
+  WRITE: / 'TOP : Global declarations'.
+  WRITE: / 'SEL : Selection-screen definitions'.
+  WRITE: / 'F01 : FORM routines and business logic'.
+
+  SKIP.
+
+  WRITE: / 'Modern ABAP Recommendation'.
+
+  ULINE.
+
+  WRITE: / '- Prefer local/global classes for new developments.'.
+  WRITE: / '- Use methods instead of FORM routines where possible.'.
+  WRITE: / '- Maintain legacy FORM INCLUDE programs when required.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Program executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
