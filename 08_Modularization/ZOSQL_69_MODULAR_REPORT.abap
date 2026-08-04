@@ -164,3 +164,183 @@ SELECTION-SCREEN COMMENT /1(60) TEXT-003.
 SELECTION-SCREEN PUSHBUTTON /1(20)
                   gv_button
                   USER-COMMAND INFO.
+*---------------------------------------------------------------------*
+* Include ZOSQL_69_F01
+* Purpose : FORM Routines
+*---------------------------------------------------------------------*
+
+*---------------------------------------------------------------------*
+* Form Initialize Program
+*---------------------------------------------------------------------*
+FORM initialize_program.
+
+  TEXT-001 = 'Material Selection'.
+  TEXT-002 = 'Report Options'.
+  TEXT-003 = 'Select the required criteria and execute the report.'.
+
+  gv_button = 'Help'.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Validate Selection Screen
+*---------------------------------------------------------------------*
+FORM validate_selection_screen.
+
+  IF p_limit <= 0.
+
+    MESSAGE 'Record limit must be greater than zero.'
+      TYPE 'E'.
+
+  ENDIF.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Header
+*---------------------------------------------------------------------*
+FORM display_header.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '             MODULAR REPORT DEMONSTRATION',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Program :', sy-repid,
+    / 'Date    :', sy-datum,
+    / 'Time    :', sy-uzeit.
+
+  SKIP.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Get Material Data
+*---------------------------------------------------------------------*
+FORM get_material_data.
+
+  SELECT
+         matnr AS material_number,
+         mtart AS material_type,
+         meins AS base_unit
+    FROM mara
+   WHERE matnr IN @s_matnr
+   ORDER BY matnr
+   UP TO @p_limit ROWS
+   INTO TABLE @gt_material.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Calculate Statistics
+*---------------------------------------------------------------------*
+FORM calculate_statistics
+  CHANGING
+    cv_total_records     TYPE i
+    cv_processed_records TYPE i.
+
+  cv_total_records = lines( gt_material ).
+  cv_processed_records = cv_total_records.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials
+  USING
+    iv_total_records TYPE i.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO gs_material.
+
+    WRITE:
+      / gs_material-material_number,
+        25 gs_material-material_type,
+        45 gs_material-base_unit.
+
+  ENDLOOP.
+
+  ULINE.
+
+  WRITE:
+    / 'Displayed Records :', iv_total_records.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer
+  USING
+    iv_total_records     TYPE i
+    iv_processed_records TYPE i.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                    REPORT SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Total Records     :', iv_total_records,
+    / 'Processed Records :', iv_processed_records.
+
+  SKIP.
+
+  WRITE: / 'Techniques Used'.
+
+  ULINE.
+
+  WRITE: / '- INCLUDE Programs'.
+  WRITE: / '- TOP / SEL / F01 Includes'.
+  WRITE: / '- FORM Routines'.
+  WRITE: / '- PERFORM Statement'.
+  WRITE: / '- USING Parameters'.
+  WRITE: / '- CHANGING Parameters'.
+  WRITE: / '- Selection Screen Validation'.
+  WRITE: / '- Modern Open SQL'.
+  WRITE: / '- Internal Tables'.
+  WRITE: / '- Modular Program Design'.
+
+  SKIP.
+
+  WRITE: / 'Clean ABAP Recommendations'.
+
+  ULINE.
+
+  WRITE: / '- Keep the main program short.'.
+  WRITE: / '- Place global declarations in TOP include.'.
+  WRITE: / '- Place selection screens in SEL include.'.
+  WRITE: / '- Place business logic in F01 include.'.
+  WRITE: / '- Keep every FORM routine focused on one task.'.
+  WRITE: / '- Prefer classes and methods in new developments.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Modular report executed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
