@@ -117,3 +117,97 @@ FORM read_materials.
   gv_record_count = lines( gt_material ).
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Call Standard Function Modules
+*---------------------------------------------------------------------*
+FORM call_standard_function_modules.
+
+  DATA:
+    lv_date TYPE char10,
+    lv_time TYPE char8.
+
+*---------------------------------------------------------------------*
+* Function Module : CONVERSION_EXIT_MATN1_OUTPUT
+* Converts internal material number to external format
+*---------------------------------------------------------------------*
+  IF gt_material IS NOT INITIAL.
+
+    READ TABLE gt_material
+      INTO gs_material
+      INDEX 1.
+
+    IF sy-subrc = 0.
+
+      CALL FUNCTION 'CONVERSION_EXIT_MATN1_OUTPUT'
+        EXPORTING
+          input  = gs_material-matnr
+        IMPORTING
+          output = gs_material-matnr.
+
+    ENDIF.
+
+  ENDIF.
+
+*---------------------------------------------------------------------*
+* Function Module : CONVERT_DATE_TO_EXTERNAL
+* Converts SAP internal date to external format
+*---------------------------------------------------------------------*
+  CALL FUNCTION 'CONVERT_DATE_TO_EXTERNAL'
+    EXPORTING
+      date_internal = sy-datum
+    IMPORTING
+      date_external = lv_date
+    EXCEPTIONS
+      date_internal_is_invalid = 1
+      OTHERS                   = 2.
+
+  IF sy-subrc = 0.
+    gv_date_text = lv_date.
+  ELSE.
+    gv_date_text = 'Invalid'.
+  ENDIF.
+
+*---------------------------------------------------------------------*
+* Function Module : CONVERT_TIME_INPUT
+* Validates and converts time value
+*---------------------------------------------------------------------*
+  CALL FUNCTION 'CONVERT_TIME_INPUT'
+    EXPORTING
+      input  = sy-uzeit
+    IMPORTING
+      output = lv_time
+    EXCEPTIONS
+      OTHERS = 1.
+
+  IF sy-subrc = 0.
+    gv_time_text = lv_time.
+  ELSE.
+    gv_time_text = sy-uzeit.
+  ENDIF.
+
+ENDFORM.
+
+*---------------------------------------------------------------------*
+* Form Display Materials
+*---------------------------------------------------------------------*
+FORM display_materials.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / 'Material Number',
+      25 'Material Type',
+      45 'Base Unit'.
+
+  ULINE.
+
+  LOOP AT gt_material INTO gs_material.
+
+    WRITE:
+      / gs_material-matnr,
+        25 gs_material-mtart,
+        45 gs_material-meins.
+
+  ENDLOOP.
+
+ENDFORM.
