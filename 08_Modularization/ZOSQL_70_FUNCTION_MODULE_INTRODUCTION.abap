@@ -211,3 +211,89 @@ FORM display_materials.
   ENDLOOP.
 
 ENDFORM.
+*---------------------------------------------------------------------*
+* Form Display Footer
+*---------------------------------------------------------------------*
+FORM display_footer.
+
+  SKIP 2.
+
+  FORMAT COLOR COL_HEADING INTENSIFIED ON.
+
+  WRITE:
+    / '===============================================================',
+    / '                  FUNCTION MODULE SUMMARY',
+    / '==============================================================='.
+
+  FORMAT RESET.
+
+  WRITE:
+    / 'Execution Date :', gv_date_text,
+    / 'Execution Time :', gv_time_text,
+    / 'Material Count :', gv_record_count.
+
+  SKIP.
+
+  WRITE: / 'Function Modules Used'.
+
+  ULINE.
+
+  WRITE: / '- CONVERSION_EXIT_MATN1_OUTPUT'.
+  WRITE: / '- CONVERT_DATE_TO_EXTERNAL'.
+  WRITE: / '- CONVERT_TIME_INPUT'.
+
+  SKIP.
+
+  WRITE: / 'CALL FUNCTION Components'.
+
+  ULINE.
+
+  WRITE: / '- EXPORTING'.
+  WRITE: / '- IMPORTING'.
+  WRITE: / '- CHANGING'.
+  WRITE: / '- TABLES (Legacy)'.
+  WRITE: / '- EXCEPTIONS'.
+
+  SKIP.
+
+  WRITE: / 'Best Practices'.
+
+  ULINE.
+
+  WRITE: / '- Reuse existing SAP standard Function Modules whenever possible.'.
+  WRITE: / '- Always check SY-SUBRC after CALL FUNCTION.'.
+  WRITE: / '- Handle all documented exceptions.'.
+  WRITE: / '- Keep custom Function Modules focused on a single responsibility.'.
+  WRITE: / '- Use meaningful parameter names.'.
+  WRITE: / '- Avoid unnecessary global data in Function Groups.'.
+
+  SKIP.
+
+  WRITE: / 'Standard FM vs Custom FM'.
+
+  ULINE.
+
+  WRITE: / 'Standard FM : Delivered by SAP and reusable.'.
+  WRITE: / 'Custom FM   : Developed by customers (Z* / Y* namespace).'.
+
+  SKIP.
+
+  WRITE: / 'Modern ABAP Recommendation'.
+
+  ULINE.
+
+  WRITE: / '- Prefer global classes and methods for new developments.'.
+  WRITE: / '- Use Function Modules mainly for RFC, BAPI, update tasks,'.
+  WRITE: / '  workflow integration and legacy applications.'.
+  WRITE: / '- Continue maintaining existing Function Modules where required.'.
+
+  ULINE.
+
+  FORMAT COLOR COL_POSITIVE INTENSIFIED ON.
+
+  WRITE:
+    / 'Function Module demonstration completed successfully.'.
+
+  FORMAT RESET.
+
+ENDFORM.
